@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <htc.h>
+#include <stdbool.h>
 
 #pragma config OSC = XT         // Oscillator Selection bits (XT oscillator)
 #pragma config OSCS = OFF       // Oscillator System Clock Switch Enable bit (Oscillator system clock switch option is disabled (main oscillator is source))
@@ -47,39 +48,37 @@
 
 #define _XTAL_FREQ 20000000
 
-#define CENTERED_DUTY1 200
-#define CENTERED_DUTY2 200
+#define CENTERED_DUTY1 1000
+#define CENTERED_DUTY2 1000
 #define PERIOD 2000
-#define DUTY1_DELTA 40
-#define DUTY2_DELTA 40
-#define DUTY1_MAX 400
-#define DUTY2_MAX 400
-#define DUTY1_MIN 60
-#define DUTY2_MIN 60
+#define DUTY1_DELTA 200
+#define DUTY2_DELTA 200
+#define DUTY1_MAX 2000
+#define DUTY2_MAX 2000
+#define DUTY1_MIN 0
+#define DUTY2_MIN 0
 #define HIGH (1)
 #define LOW (0)
 
-
-
-static int dutyCycle1Counter = 0;
-static int periodCounter = 0;
-static int dutyCycle2Counter = 0;
-static int dutyCycle1 = CENTERED_DUTY1;
-static int dutyCycle2 = CENTERED_DUTY2;
-static int pressReleaseFlag1 = 0;
-static int pressReleaseFlag2 = 0;
-static int pressReleaseFlag3 = 0;
-static int pressReleaseFlag4 = 0;
-static int pressReleaseFlagCenter = 0;
-static int pressReleaseFlagRelay = 0;
+static unsigned int dutyCycle1Counter = 0;
+static unsigned int periodCounter = 0;
+static unsigned int dutyCycle2Counter = 0;
+static unsigned int dutyCycle1 = CENTERED_DUTY1;
+static unsigned int dutyCycle2 = CENTERED_DUTY2;
+static bool pressReleaseFlag1 = 0;
+static bool pressReleaseFlag2 = 0;
+static bool pressReleaseFlag3 = 0;
+static bool pressReleaseFlag4 = 0;
+static bool pressReleaseFlagCenter = 0;
+static bool pressReleaseFlagRelay = 0;
 
 void ConfigureTimers(void)
 {
-    /*1 us Timer0 interrupt*/
-    T0CON	 = 0xC8;
-    TMR0L	 = 0xFB;
-    GIE	 = 1;
-    TMR0IE	 = 1;
+/*1 us Timer0 interrupt*/
+  T0CON	 = 0xC8;
+  TMR0L	 = 0xFB;
+  GIE	 = 1;
+  TMR0IE	 = 1;
 }
 
 void InitializeOutputPins(void)
@@ -99,7 +98,7 @@ void IntializeInputPins(void)
     TRISBbits.RB5 = 1 ;   //   configure RB5 as input
     TRISBbits.RB6 = 1 ;   //   configure RB6 as input
     TRISBbits.RB7 = 1 ;   //   configure RB7 as input
-    
+
     INTCON2bits.nRBPU = 0; //Set all B input ports to pull ups
 }
 
@@ -118,32 +117,12 @@ void ToggleRelayOutput(void)
     RC5 ^= 1;
 }
 
-char ReadInput(char inputNumber)
-{
-    switch(inputNumber)
-    {
-        case 1:
-            return RA0;
-            
-        case 2:
-            return RA1;
-            
-        default:
-            break;
-    }
-}
-
-void UpdateDutyCycle1(void)
-{
-    
-}
-
 void main(void) {
-    
+
     InitializeOutputPins();
     IntializeInputPins();
     ConfigureTimers();
-    
+
     while(1)
     {
     }
@@ -155,7 +134,7 @@ void IncrementMotor1DutyCycle(void)
 {
     if(dutyCycle1 < DUTY1_MAX)
     {
-        dutyCycle1 += DUTY1_DELTA;
+      dutyCycle1 += DUTY1_DELTA;
     }
 }
 
@@ -163,7 +142,7 @@ void DecrementMotor1DutyCycle(void)
 {
     if(dutyCycle1 > DUTY1_MIN)
     {
-        dutyCycle1 -= DUTY1_DELTA;
+      dutyCycle1 -= DUTY1_DELTA;
     }
 }
 
@@ -171,7 +150,7 @@ void IncrementMotor2DutyCycle(void)
 {
     if(dutyCycle2 < DUTY2_MAX)
     {
-        dutyCycle2 += DUTY2_DELTA;
+      dutyCycle2 += DUTY2_DELTA;
     }
 }
 
@@ -179,7 +158,7 @@ void DecrementMotor2DutyCycle(void)
 {
     if(dutyCycle2 > DUTY2_MIN)
     {
-        dutyCycle2 -= DUTY2_DELTA;
+      dutyCycle2 -= DUTY2_DELTA;
     }
 }
 
@@ -193,65 +172,65 @@ void MonitorMotor1IncrementButton(void)
 {
     if((RB0 == 0) && (pressReleaseFlag1 == 0))
     {
-        IncrementMotor1DutyCycle();
-        pressReleaseFlag1 = 1;
+      IncrementMotor1DutyCycle();
+      pressReleaseFlag1 = 1;
     }
     else if((RB0 == 1) && (pressReleaseFlag1 == 1))
     {
-        pressReleaseFlag1 = 0;
-    }
+       pressReleaseFlag1 = 0;
+    }  
 }
 
 void MonitorMotor1DecrementButton(void)
 {
     if((RB1 == 0) && (pressReleaseFlag2 == 0))
     {
-        DecrementMotor1DutyCycle();
-        pressReleaseFlag2 = 1;
+      DecrementMotor1DutyCycle();
+      pressReleaseFlag2 = 1;
     }
     else if((RB1 == 1) && (pressReleaseFlag2 == 1))
     {
-        pressReleaseFlag2 = 0;
-    }
+       pressReleaseFlag2 = 0;
+    }  
 }
 
 void MonitorMotor2IncrementButton(void)
 {
     if((RB2 == 0) && (pressReleaseFlag3 == 0))
     {
-        IncrementMotor2DutyCycle();
-        pressReleaseFlag3 = 1;
+      IncrementMotor2DutyCycle();
+      pressReleaseFlag3 = 1;
     }
     else if((RB2 == 1) && (pressReleaseFlag3 == 1))
     {
-        pressReleaseFlag3 = 0;
-    }
+       pressReleaseFlag3 = 0;
+    }  
 }
 
 void MonitorMotor2DecrementButton(void)
 {
     if((RB3 == 0) && (pressReleaseFlag4 == 0))
     {
-        DecrementMotor2DutyCycle();
-        pressReleaseFlag4 = 1;
+      DecrementMotor2DutyCycle();
+      pressReleaseFlag4 = 1;
     }
     else if((RB3 == 1) && (pressReleaseFlag4 == 1))
     {
-        pressReleaseFlag4 = 0;
-    }
+       pressReleaseFlag4 = 0;
+    }  
 }
 
 void MonitorCenteringButton(void)
 {
     if((RB4 == 0) && (pressReleaseFlagCenter == 0))
     {
-        CenterMotors();
-        pressReleaseFlagCenter = 1;
+      CenterMotors();
+      pressReleaseFlagCenter = 1;
     }
     else if((RB4 == 1) && (pressReleaseFlagCenter == 1))
     {
-        pressReleaseFlagCenter = 0;
-    }
+       pressReleaseFlagCenter = 0;
+    }  
 }
 
 void MonitorMotor1Buttons(void)
@@ -270,46 +249,47 @@ void MonitorRelayButton(void)
 {
     if((RB5 == 0) && (pressReleaseFlagRelay == 0))
     {
-        ToggleRelayOutput();
-        pressReleaseFlagRelay = 1;
+      ToggleRelayOutput();
+      pressReleaseFlagRelay = 1;
     }
     else if((RB5 == 1) && (pressReleaseFlagRelay == 1))
     {
-        pressReleaseFlagRelay = 0;
-    }
+       pressReleaseFlagRelay = 0;
+    }  
 }
 
 void interrupt Interrupt(){
+  
+  MonitorMotor1Buttons();
+  MonitorMotor2Buttons();
+  MonitorCenteringButton();
+  MonitorRelayButton();
     
-    MonitorMotor1Buttons();
-    MonitorMotor2Buttons();
-    MonitorCenteringButton();
-    MonitorRelayButton();
-    
-    if (TMR0IF){
-        if(dutyCycle1Counter == dutyCycle1)
-        {
-            WriteMotor1Output(LOW);
-        }
-        
-        if(dutyCycle2Counter == dutyCycle2)
-        {
-            WriteMotor2Output(LOW);
-        }
-        
-        if(periodCounter == PERIOD)
-        {
-            WriteMotor1Output(HIGH);
-            WriteMotor2Output(HIGH);
-            dutyCycle1Counter =0;
-            dutyCycle2Counter =0;
-            periodCounter=0;
-        }
-        dutyCycle1Counter++;
-        dutyCycle2Counter++;
-        periodCounter++;
-        
-        TMR0IF = 0;
-        TMR0L	 = 0xFB;
+  if (TMR0IF){ 
+    if(dutyCycle1Counter == dutyCycle1)
+    {
+        WriteMotor1Output(LOW);
     }
-}
+    
+    if(dutyCycle2Counter == dutyCycle2)
+    {
+        WriteMotor2Output(LOW);
+    }
+    
+    if(periodCounter == PERIOD)
+    {
+        WriteMotor1Output(HIGH);
+        WriteMotor2Output(HIGH);
+        dutyCycle1Counter =0;
+        dutyCycle2Counter =0;
+        periodCounter=0;
+    }
+       dutyCycle1Counter++;
+       dutyCycle2Counter++;
+       periodCounter++;
+
+    TMR0IF = 0;
+    TMR0L	 = 0xFB;
+  }
+} 
+

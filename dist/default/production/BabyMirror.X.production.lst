@@ -1,0 +1,2285 @@
+
+
+Microchip Technology PIC18 LITE Macro Assembler V1.35 build -356382666 
+                                                                                               Wed Jan 20 17:13:16 2016
+
+Microchip Technology Omniscient Code Generator v1.35 (Free mode) build 201507080246
+     1                           	processor	18F242
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	lm
+     5                           	psect	idataCOMRAM,global,class=CODE,delta=1
+     6                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     7                           	psect	bssCOMRAM,global,class=COMRAM,space=1,delta=1
+     8                           	psect	dataCOMRAM,global,class=COMRAM,space=1,delta=1
+     9                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1
+    10                           	psect	text0,global,reloc=2,class=CODE,delta=1
+    11                           	psect	text1,global,reloc=2,class=CODE,delta=1
+    12                           	psect	text2,global,reloc=2,class=CODE,delta=1
+    13                           	psect	text3,global,reloc=2,class=CODE,delta=1
+    14                           	psect	intcode,global,reloc=2,class=CODE,delta=1
+    15                           	psect	text5,global,reloc=2,class=CODE,delta=1
+    16                           	psect	text6,global,reloc=2,class=CODE,delta=1
+    17                           	psect	text7,global,reloc=2,class=CODE,delta=1
+    18                           	psect	text8,global,reloc=2,class=CODE,delta=1
+    19                           	psect	text9,global,reloc=2,class=CODE,delta=1
+    20                           	psect	text10,global,reloc=2,class=CODE,delta=1
+    21                           	psect	text11,global,reloc=2,class=CODE,delta=1
+    22                           	psect	text12,global,reloc=2,class=CODE,delta=1
+    23                           	psect	text13,global,reloc=2,class=CODE,delta=1
+    24                           	psect	text14,global,reloc=2,class=CODE,delta=1
+    25                           	psect	text15,global,reloc=2,class=CODE,delta=1
+    26                           	psect	text16,global,reloc=2,class=CODE,delta=1
+    27                           	psect	text17,global,reloc=2,class=CODE,delta=1
+    28                           	psect	text18,global,reloc=2,class=CODE,delta=1
+    29                           	psect	text19,global,reloc=2,class=CODE,delta=1
+    30                           	psect	text20,global,reloc=2,class=CODE,delta=1
+    31                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1
+    32                           	psect	rparam,global,class=COMRAM,space=1,delta=1
+    33                           	psect	temp,global,ovrld,common,class=COMRAM,space=1,delta=1
+    34  0000                     
+    35                           	psect	idataCOMRAM
+    36  0002DA                     __pidataCOMRAM:
+    37                           	opt stack 0
+    38                           
+    39                           ;initializer for _dutyCycle1
+    40  0002DA  03E8               	dw	1000
+    41                           
+    42                           ;initializer for _dutyCycle2
+    43  0002DC  03E8               	dw	1000
+    44  0000                     _INTCON2bits	set	4081
+    45  0000                     _T0CON	set	4053
+    46  0000                     _TMR0L	set	4054
+    47  0000                     _TRISBbits	set	3987
+    48  0000                     _TRISCbits	set	3988
+    49  0000                     _GIE	set	32663
+    50  0000                     _RB0	set	31752
+    51  0000                     _RB1	set	31753
+    52  0000                     _RB2	set	31754
+    53  0000                     _RB3	set	31755
+    54  0000                     _RB4	set	31756
+    55  0000                     _RB5	set	31757
+    56  0000                     _RC3	set	31763
+    57  0000                     _RC4	set	31764
+    58  0000                     _RC5	set	31765
+    59  0000                     _TMR0IE	set	32661
+    60  0000                     _TMR0IF	set	32658
+    61                           
+    62                           ; #config settings
+    63  0000                     
+    64                           	psect	cinit
+    65  000102                     __pcinit:
+    66                           	opt stack 0
+    67  000102                     start_initialization:
+    68                           	opt stack 0
+    69  000102                     __initialization:
+    70                           	opt stack 0
+    71                           
+    72                           ; Clear objects allocated to COMRAM (12 bytes)
+    73  000102  EE00  F010         	lfsr	0,__pbssCOMRAM
+    74  000106  0E0C               	movlw	12
+    75  000108                     clear_0:
+    76  000108  6AEE               	clrf	postinc0,c
+    77  00010A  06E8               	decf	wreg,f,c
+    78  00010C  E1FD               	bnz	clear_0
+    79                           
+    80                           ; Initialize objects allocated to COMRAM (4 bytes)
+    81                           ; load TBLPTR registers with __pidataCOMRAM
+    82  00010E  0EDA               	movlw	low __pidataCOMRAM
+    83  000110  6EF6               	movwf	tblptrl,c
+    84  000112  0E02               	movlw	high __pidataCOMRAM
+    85  000114  6EF7               	movwf	tblptrh,c
+    86  000116  0E00               	movlw	low (__pidataCOMRAM shr (0+16))
+    87  000118  6EF8               	movwf	tblptru,c
+    88  00011A  EE00  F01C         	lfsr	0,__pdataCOMRAM
+    89  00011E  EE10 F004          	lfsr	1,4
+    90  000122                     copy_data0:
+    91  000122  0009               	tblrd		*+
+    92  000124  CFF5 FFEE          	movff	tablat,postinc0
+    93  000128  50E5               	movf	postdec1,w,c
+    94  00012A  50E1               	movf	fsr1l,w,c
+    95  00012C  E1FA               	bnz	copy_data0
+    96  00012E                     end_of_initialization:
+    97                           	opt stack 0
+    98  00012E                     __end_of__initialization:
+    99                           	opt stack 0
+   100  00012E  9020               	bcf	int$flags,0,c	;clear compiler interrupt flag (level 1)
+   101  000130  9220               	bcf	int$flags,1,c	;clear compiler interrupt flag (level 2)
+   102  000132  0100               	movlb	0
+   103  000134  EF43  F001         	goto	_main	;jump to C main() function
+   104                           tblptru	equ	0xFF8
+   105                           tblptrh	equ	0xFF7
+   106                           tblptrl	equ	0xFF6
+   107                           tablat	equ	0xFF5
+   108                           postinc0	equ	0xFEE
+   109                           wreg	equ	0xFE8
+   110                           postdec1	equ	0xFE5
+   111                           fsr1l	equ	0xFE1
+   112                           
+   113                           	psect	bssCOMRAM
+   114  000010                     __pbssCOMRAM:
+   115                           	opt stack 0
+   116  000010                     _dutyCycle1Counter:
+   117                           	opt stack 0
+   118  000010                     	ds	2
+   119  000012                     _dutyCycle2Counter:
+   120                           	opt stack 0
+   121  000012                     	ds	2
+   122  000014                     _periodCounter:
+   123                           	opt stack 0
+   124  000014                     	ds	2
+   125  000016                     _pressReleaseFlag1:
+   126                           	opt stack 0
+   127  000016                     	ds	1
+   128  000017                     _pressReleaseFlag2:
+   129                           	opt stack 0
+   130  000017                     	ds	1
+   131  000018                     _pressReleaseFlag3:
+   132                           	opt stack 0
+   133  000018                     	ds	1
+   134  000019                     _pressReleaseFlag4:
+   135                           	opt stack 0
+   136  000019                     	ds	1
+   137  00001A                     _pressReleaseFlagCenter:
+   138                           	opt stack 0
+   139  00001A                     	ds	1
+   140  00001B                     _pressReleaseFlagRelay:
+   141                           	opt stack 0
+   142  00001B                     	ds	1
+   143                           tblptru	equ	0xFF8
+   144                           tblptrh	equ	0xFF7
+   145                           tblptrl	equ	0xFF6
+   146                           tablat	equ	0xFF5
+   147                           postinc0	equ	0xFEE
+   148                           wreg	equ	0xFE8
+   149                           postdec1	equ	0xFE5
+   150                           fsr1l	equ	0xFE1
+   151                           
+   152                           	psect	dataCOMRAM
+   153  00001C                     __pdataCOMRAM:
+   154                           	opt stack 0
+   155  00001C                     _dutyCycle1:
+   156                           	opt stack 0
+   157  00001C                     	ds	2
+   158  00001E                     _dutyCycle2:
+   159                           	opt stack 0
+   160  00001E                     	ds	2
+   161                           tblptru	equ	0xFF8
+   162                           tblptrh	equ	0xFF7
+   163                           tblptrl	equ	0xFF6
+   164                           tablat	equ	0xFF5
+   165                           postinc0	equ	0xFEE
+   166                           wreg	equ	0xFE8
+   167                           postdec1	equ	0xFE5
+   168                           fsr1l	equ	0xFE1
+   169                           
+   170                           	psect	cstackCOMRAM
+   171  000001                     __pcstackCOMRAM:
+   172                           	opt stack 0
+   173  000001                     WriteMotor1Output@output:
+   174                           	opt stack 0
+   175  000001                     WriteMotor2Output@output:
+   176                           	opt stack 0
+   177                           
+   178                           ; 1 bytes @ 0x0
+   179  000001                     	ds	1
+   180  000002                     ??_Interrupt:
+   181                           
+   182                           ; 0 bytes @ 0x1
+   183  000002                     	ds	14
+   184  000010                     tblptru	equ	0xFF8
+   185                           tblptrh	equ	0xFF7
+   186                           tblptrl	equ	0xFF6
+   187                           tablat	equ	0xFF5
+   188                           postinc0	equ	0xFEE
+   189                           wreg	equ	0xFE8
+   190                           postdec1	equ	0xFE5
+   191                           fsr1l	equ	0xFE1
+   192                           
+   193                           ; 0 bytes @ 0xF
+   194 ;;
+   195 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   196 ;;
+   197 ;; *************** function _main *****************
+   198 ;; Defined at:
+   199 ;;		line 120 in file "main.c"
+   200 ;; Parameters:    Size  Location     Type
+   201 ;;		None
+   202 ;; Auto vars:     Size  Location     Type
+   203 ;;		None
+   204 ;; Return value:  Size  Location     Type
+   205 ;;		None               void
+   206 ;; Registers used:
+   207 ;;		wreg, status,2, cstack
+   208 ;; Tracked objects:
+   209 ;;		On entry : 0/0
+   210 ;;		On exit  : 0/0
+   211 ;;		Unchanged: 0/0
+   212 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   213 ;;      Params:         0       0       0       0
+   214 ;;      Locals:         0       0       0       0
+   215 ;;      Temps:          0       0       0       0
+   216 ;;      Totals:         0       0       0       0
+   217 ;;Total ram usage:        0 bytes
+   218 ;; Hardware stack levels required when called:    5
+   219 ;; This function calls:
+   220 ;;		_ConfigureTimers
+   221 ;;		_InitializeOutputPins
+   222 ;;		_IntializeInputPins
+   223 ;; This function is called by:
+   224 ;;		Startup code after reset
+   225 ;; This function uses a non-reentrant model
+   226 ;;
+   227                           
+   228                           	psect	text0
+   229  000286                     __ptext0:
+   230                           	opt stack 0
+   231  000286                     _main:
+   232                           	opt stack 26
+   233                           
+   234                           ;main.c: 122: InitializeOutputPins();
+   235                           
+   236                           ;incstack = 0
+   237  000286  EC69  F001         	call	_InitializeOutputPins	;wreg free
+   238                           
+   239                           ;main.c: 123: IntializeInputPins();
+   240  00028A  EC1E  F001         	call	_IntializeInputPins	;wreg free
+   241                           
+   242                           ;main.c: 124: ConfigureTimers();
+   243  00028E  EC4A  F001         	call	_ConfigureTimers	;wreg free
+   244  000292  D7FF               	goto	l78
+   245  000294                     __end_of_main:
+   246                           	opt stack 0
+   247                           tblptru	equ	0xFF8
+   248                           tblptrh	equ	0xFF7
+   249                           tblptrl	equ	0xFF6
+   250                           tablat	equ	0xFF5
+   251                           postinc0	equ	0xFEE
+   252                           wreg	equ	0xFE8
+   253                           postdec1	equ	0xFE5
+   254                           fsr1l	equ	0xFE1
+   255                           
+   256 ;; *************** function _IntializeInputPins *****************
+   257 ;; Defined at:
+   258 ;;		line 91 in file "main.c"
+   259 ;; Parameters:    Size  Location     Type
+   260 ;;		None
+   261 ;; Auto vars:     Size  Location     Type
+   262 ;;		None
+   263 ;; Return value:  Size  Location     Type
+   264 ;;		None               void
+   265 ;; Registers used:
+   266 ;;		None
+   267 ;; Tracked objects:
+   268 ;;		On entry : 0/0
+   269 ;;		On exit  : 0/0
+   270 ;;		Unchanged: 0/0
+   271 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   272 ;;      Params:         0       0       0       0
+   273 ;;      Locals:         0       0       0       0
+   274 ;;      Temps:          0       0       0       0
+   275 ;;      Totals:         0       0       0       0
+   276 ;;Total ram usage:        0 bytes
+   277 ;; Hardware stack levels used:    1
+   278 ;; Hardware stack levels required when called:    4
+   279 ;; This function calls:
+   280 ;;		Nothing
+   281 ;; This function is called by:
+   282 ;;		_main
+   283 ;; This function uses a non-reentrant model
+   284 ;;
+   285                           
+   286                           	psect	text1
+   287  00023C                     __ptext1:
+   288                           	opt stack 0
+   289  00023C                     _IntializeInputPins:
+   290                           	opt stack 26
+   291                           
+   292                           ;main.c: 93: TRISBbits.RB0 = 1 ;
+   293                           
+   294                           ;incstack = 0
+   295  00023C  8093               	bsf	3987,0,c	;volatile
+   296                           
+   297                           ;main.c: 94: TRISBbits.RB1 = 1 ;
+   298  00023E  8293               	bsf	3987,1,c	;volatile
+   299                           
+   300                           ;main.c: 95: TRISBbits.RB2 = 1 ;
+   301  000240  8493               	bsf	3987,2,c	;volatile
+   302                           
+   303                           ;main.c: 96: TRISBbits.RB3 = 1 ;
+   304  000242  8693               	bsf	3987,3,c	;volatile
+   305                           
+   306                           ;main.c: 97: TRISBbits.RB4 = 1 ;
+   307  000244  8893               	bsf	3987,4,c	;volatile
+   308                           
+   309                           ;main.c: 98: TRISBbits.RB5 = 1 ;
+   310  000246  8A93               	bsf	3987,5,c	;volatile
+   311                           
+   312                           ;main.c: 99: TRISBbits.RB6 = 1 ;
+   313  000248  8C93               	bsf	3987,6,c	;volatile
+   314                           
+   315                           ;main.c: 100: TRISBbits.RB7 = 1 ;
+   316  00024A  8E93               	bsf	3987,7,c	;volatile
+   317                           
+   318                           ;main.c: 102: INTCON2bits.nRBPU = 0;
+   319  00024C  9EF1               	bcf	intcon2,7,c	;volatile
+   320  00024E  0012               	return		;funcret
+   321  000250                     __end_of_IntializeInputPins:
+   322                           	opt stack 0
+   323                           tblptru	equ	0xFF8
+   324                           tblptrh	equ	0xFF7
+   325                           tblptrl	equ	0xFF6
+   326                           tablat	equ	0xFF5
+   327                           intcon2	equ	0xFF1
+   328                           postinc0	equ	0xFEE
+   329                           wreg	equ	0xFE8
+   330                           postdec1	equ	0xFE5
+   331                           fsr1l	equ	0xFE1
+   332                           
+   333 ;; *************** function _InitializeOutputPins *****************
+   334 ;; Defined at:
+   335 ;;		line 84 in file "main.c"
+   336 ;; Parameters:    Size  Location     Type
+   337 ;;		None
+   338 ;; Auto vars:     Size  Location     Type
+   339 ;;		None
+   340 ;; Return value:  Size  Location     Type
+   341 ;;		None               void
+   342 ;; Registers used:
+   343 ;;		None
+   344 ;; Tracked objects:
+   345 ;;		On entry : 0/0
+   346 ;;		On exit  : 0/0
+   347 ;;		Unchanged: 0/0
+   348 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   349 ;;      Params:         0       0       0       0
+   350 ;;      Locals:         0       0       0       0
+   351 ;;      Temps:          0       0       0       0
+   352 ;;      Totals:         0       0       0       0
+   353 ;;Total ram usage:        0 bytes
+   354 ;; Hardware stack levels used:    1
+   355 ;; Hardware stack levels required when called:    4
+   356 ;; This function calls:
+   357 ;;		Nothing
+   358 ;; This function is called by:
+   359 ;;		_main
+   360 ;; This function uses a non-reentrant model
+   361 ;;
+   362                           
+   363                           	psect	text2
+   364  0002D2                     __ptext2:
+   365                           	opt stack 0
+   366  0002D2                     _InitializeOutputPins:
+   367                           	opt stack 26
+   368                           
+   369                           ;main.c: 86: TRISCbits.RC3 = 0 ;
+   370                           
+   371                           ;incstack = 0
+   372  0002D2  9694               	bcf	3988,3,c	;volatile
+   373                           
+   374                           ;main.c: 87: TRISCbits.RC4 = 0 ;
+   375  0002D4  9894               	bcf	3988,4,c	;volatile
+   376                           
+   377                           ;main.c: 88: TRISCbits.RC5 = 0 ;
+   378  0002D6  9A94               	bcf	3988,5,c	;volatile
+   379  0002D8  0012               	return		;funcret
+   380  0002DA                     __end_of_InitializeOutputPins:
+   381                           	opt stack 0
+   382                           tblptru	equ	0xFF8
+   383                           tblptrh	equ	0xFF7
+   384                           tblptrl	equ	0xFF6
+   385                           tablat	equ	0xFF5
+   386                           intcon2	equ	0xFF1
+   387                           postinc0	equ	0xFEE
+   388                           wreg	equ	0xFE8
+   389                           postdec1	equ	0xFE5
+   390                           fsr1l	equ	0xFE1
+   391                           
+   392 ;; *************** function _ConfigureTimers *****************
+   393 ;; Defined at:
+   394 ;;		line 75 in file "main.c"
+   395 ;; Parameters:    Size  Location     Type
+   396 ;;		None
+   397 ;; Auto vars:     Size  Location     Type
+   398 ;;		None
+   399 ;; Return value:  Size  Location     Type
+   400 ;;		None               void
+   401 ;; Registers used:
+   402 ;;		wreg, status,2
+   403 ;; Tracked objects:
+   404 ;;		On entry : 0/0
+   405 ;;		On exit  : 0/0
+   406 ;;		Unchanged: 0/0
+   407 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   408 ;;      Params:         0       0       0       0
+   409 ;;      Locals:         0       0       0       0
+   410 ;;      Temps:          0       0       0       0
+   411 ;;      Totals:         0       0       0       0
+   412 ;;Total ram usage:        0 bytes
+   413 ;; Hardware stack levels used:    1
+   414 ;; Hardware stack levels required when called:    4
+   415 ;; This function calls:
+   416 ;;		Nothing
+   417 ;; This function is called by:
+   418 ;;		_main
+   419 ;; This function uses a non-reentrant model
+   420 ;;
+   421                           
+   422                           	psect	text3
+   423  000294                     __ptext3:
+   424                           	opt stack 0
+   425  000294                     _ConfigureTimers:
+   426                           	opt stack 26
+   427                           
+   428                           ;main.c: 78: T0CON = 0xC8;
+   429                           
+   430                           ;incstack = 0
+   431  000294  0EC8               	movlw	200
+   432  000296  6ED5               	movwf	4053,c	;volatile
+   433                           
+   434                           ;main.c: 79: TMR0L = 0xFB;
+   435  000298  0EFB               	movlw	251
+   436  00029A  6ED6               	movwf	4054,c	;volatile
+   437                           
+   438                           ;main.c: 80: GIE = 1;
+   439  00029C  8EF2               	bsf	intcon,7,c	;volatile
+   440                           
+   441                           ;main.c: 81: TMR0IE = 1;
+   442  00029E  8AF2               	bsf	intcon,5,c	;volatile
+   443  0002A0  0012               	return		;funcret
+   444  0002A2                     __end_of_ConfigureTimers:
+   445                           	opt stack 0
+   446                           tblptru	equ	0xFF8
+   447                           tblptrh	equ	0xFF7
+   448                           tblptrl	equ	0xFF6
+   449                           tablat	equ	0xFF5
+   450                           intcon	equ	0xFF2
+   451                           intcon2	equ	0xFF1
+   452                           postinc0	equ	0xFEE
+   453                           wreg	equ	0xFE8
+   454                           postdec1	equ	0xFE5
+   455                           fsr1l	equ	0xFE1
+   456                           
+   457 ;; *************** function _Interrupt *****************
+   458 ;; Defined at:
+   459 ;;		line 261 in file "main.c"
+   460 ;; Parameters:    Size  Location     Type
+   461 ;;		None
+   462 ;; Auto vars:     Size  Location     Type
+   463 ;;		None
+   464 ;; Return value:  Size  Location     Type
+   465 ;;		None               void
+   466 ;; Registers used:
+   467 ;;		wreg, status,2, status,0, cstack
+   468 ;; Tracked objects:
+   469 ;;		On entry : 0/0
+   470 ;;		On exit  : 0/0
+   471 ;;		Unchanged: 0/0
+   472 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   473 ;;      Params:         0       0       0       0
+   474 ;;      Locals:         0       0       0       0
+   475 ;;      Temps:         14       0       0       0
+   476 ;;      Totals:        14       0       0       0
+   477 ;;Total ram usage:       14 bytes
+   478 ;; Hardware stack levels used:    1
+   479 ;; Hardware stack levels required when called:    3
+   480 ;; This function calls:
+   481 ;;		_MonitorCenteringButton
+   482 ;;		_MonitorMotor1Buttons
+   483 ;;		_MonitorMotor2Buttons
+   484 ;;		_MonitorRelayButton
+   485 ;;		_WriteMotor1Output
+   486 ;;		_WriteMotor2Output
+   487 ;; This function is called by:
+   488 ;;		Interrupt level 2
+   489 ;; This function uses a non-reentrant model
+   490 ;;
+   491                           
+   492                           	psect	intcode
+   493  000008                     __pintcode:
+   494                           	opt stack 0
+   495  000008                     _Interrupt:
+   496                           	opt stack 26
+   497                           
+   498                           ;incstack = 0
+   499  000008  8220               	bsf	btemp,1,c	;set compiler interrupt flag (level 2)
+   500  00000A  CFFA F002          	movff	pclath,??_Interrupt
+   501  00000E  CFFB F003          	movff	pclatu,??_Interrupt+1
+   502  000012  CFE9 F004          	movff	fsr0l,??_Interrupt+2
+   503  000016  CFEA F005          	movff	fsr0h,??_Interrupt+3
+   504  00001A  CFE1 F006          	movff	fsr1l,??_Interrupt+4
+   505  00001E  CFE2 F007          	movff	fsr1h,??_Interrupt+5
+   506  000022  CFD9 F008          	movff	fsr2l,??_Interrupt+6
+   507  000026  CFDA F009          	movff	fsr2h,??_Interrupt+7
+   508  00002A  CFF3 F00A          	movff	prodl,??_Interrupt+8
+   509  00002E  CFF4 F00B          	movff	prodh,??_Interrupt+9
+   510  000032  CFF6 F00C          	movff	tblptrl,??_Interrupt+10
+   511  000036  CFF7 F00D          	movff	tblptrh,??_Interrupt+11
+   512  00003A  CFF8 F00E          	movff	tblptru,??_Interrupt+12
+   513  00003E  CFF5 F00F          	movff	tablat,??_Interrupt+13
+   514                           
+   515                           ;main.c: 263: MonitorMotor1Buttons();
+   516  000042  EC64  F001         	call	_MonitorMotor1Buttons	;wreg free
+   517                           
+   518                           ;main.c: 264: MonitorMotor2Buttons();
+   519  000046  EC5F  F001         	call	_MonitorMotor2Buttons	;wreg free
+   520                           
+   521                           ;main.c: 265: MonitorCenteringButton();
+   522  00004A  ECF6  F000         	call	_MonitorCenteringButton	;wreg free
+   523                           
+   524                           ;main.c: 266: MonitorRelayButton();
+   525  00004E  EC9C  F000         	call	_MonitorRelayButton	;wreg free
+   526                           
+   527                           ;main.c: 268: if (TMR0IF){
+   528  000052  A4F2               	btfss	intcon,2,c	;volatile
+   529  000054  D036               	goto	i2l148
+   530                           
+   531                           ;main.c: 269: if(dutyCycle1Counter == dutyCycle1)
+   532  000056  501C               	movf	_dutyCycle1,w,c
+   533  000058  1810               	xorwf	_dutyCycle1Counter,w,c
+   534  00005A  E107               	bnz	i2l868
+   535  00005C  501D               	movf	_dutyCycle1+1,w,c
+   536  00005E  1811               	xorwf	_dutyCycle1Counter+1,w,c
+   537  000060  A4D8               	btfss	status,2,c
+   538  000062  D003               	goto	i2l868
+   539                           
+   540                           ;main.c: 270: {
+   541                           ;main.c: 271: WriteMotor1Output((0));
+   542  000064  0E00               	movlw	0
+   543  000066  EC58  F001         	call	_WriteMotor1Output
+   544  00006A                     i2l868:
+   545                           
+   546                           ;main.c: 272: }
+   547                           ;main.c: 274: if(dutyCycle2Counter == dutyCycle2)
+   548  00006A  501E               	movf	_dutyCycle2,w,c
+   549  00006C  1812               	xorwf	_dutyCycle2Counter,w,c
+   550  00006E  E107               	bnz	i2l872
+   551  000070  501F               	movf	_dutyCycle2+1,w,c
+   552  000072  1813               	xorwf	_dutyCycle2Counter+1,w,c
+   553  000074  A4D8               	btfss	status,2,c
+   554  000076  D003               	goto	i2l872
+   555                           
+   556                           ;main.c: 275: {
+   557                           ;main.c: 276: WriteMotor2Output((0));
+   558  000078  0E00               	movlw	0
+   559  00007A  EC51  F001         	call	_WriteMotor2Output
+   560  00007E                     i2l872:
+   561                           
+   562                           ;main.c: 277: }
+   563                           ;main.c: 279: if(periodCounter == 2000)
+   564  00007E  0ED0               	movlw	208
+   565  000080  1814               	xorwf	_periodCounter,w,c
+   566  000082  E116               	bnz	i2l882
+   567  000084  0E07               	movlw	7
+   568  000086  1815               	xorwf	_periodCounter+1,w,c
+   569  000088  A4D8               	btfss	status,2,c
+   570  00008A  D012               	goto	i2l882
+   571                           
+   572                           ;main.c: 280: {
+   573                           ;main.c: 281: WriteMotor1Output((1));
+   574  00008C  0E01               	movlw	1
+   575  00008E  EC58  F001         	call	_WriteMotor1Output
+   576                           
+   577                           ;main.c: 282: WriteMotor2Output((1));
+   578  000092  0E01               	movlw	1
+   579  000094  EC51  F001         	call	_WriteMotor2Output
+   580                           
+   581                           ;main.c: 283: dutyCycle1Counter =0;
+   582  000098  0E00               	movlw	0
+   583  00009A  6E11               	movwf	_dutyCycle1Counter+1,c
+   584  00009C  0E00               	movlw	0
+   585  00009E  6E10               	movwf	_dutyCycle1Counter,c
+   586                           
+   587                           ;main.c: 284: dutyCycle2Counter =0;
+   588  0000A0  0E00               	movlw	0
+   589  0000A2  6E13               	movwf	_dutyCycle2Counter+1,c
+   590  0000A4  0E00               	movlw	0
+   591  0000A6  6E12               	movwf	_dutyCycle2Counter,c
+   592                           
+   593                           ;main.c: 285: periodCounter=0;
+   594  0000A8  0E00               	movlw	0
+   595  0000AA  6E15               	movwf	_periodCounter+1,c
+   596  0000AC  0E00               	movlw	0
+   597  0000AE  6E14               	movwf	_periodCounter,c
+   598  0000B0                     i2l882:
+   599                           
+   600                           ;main.c: 286: }
+   601                           ;main.c: 287: dutyCycle1Counter++;
+   602  0000B0  4A10               	infsnz	_dutyCycle1Counter,f,c
+   603  0000B2  2A11               	incf	_dutyCycle1Counter+1,f,c
+   604                           
+   605                           ;main.c: 288: dutyCycle2Counter++;
+   606  0000B4  4A12               	infsnz	_dutyCycle2Counter,f,c
+   607  0000B6  2A13               	incf	_dutyCycle2Counter+1,f,c
+   608                           
+   609                           ;main.c: 289: periodCounter++;
+   610  0000B8  4A14               	infsnz	_periodCounter,f,c
+   611  0000BA  2A15               	incf	_periodCounter+1,f,c
+   612                           
+   613                           ;main.c: 291: TMR0IF = 0;
+   614  0000BC  94F2               	bcf	intcon,2,c	;volatile
+   615                           
+   616                           ;main.c: 292: TMR0L = 0xFB;
+   617  0000BE  0EFB               	movlw	251
+   618  0000C0  6ED6               	movwf	4054,c	;volatile
+   619  0000C2                     i2l148:
+   620  0000C2  C00F  FFF5         	movff	??_Interrupt+13,tablat
+   621  0000C6  C00E  FFF8         	movff	??_Interrupt+12,tblptru
+   622  0000CA  C00D  FFF7         	movff	??_Interrupt+11,tblptrh
+   623  0000CE  C00C  FFF6         	movff	??_Interrupt+10,tblptrl
+   624  0000D2  C00B  FFF4         	movff	??_Interrupt+9,prodh
+   625  0000D6  C00A  FFF3         	movff	??_Interrupt+8,prodl
+   626  0000DA  C009  FFDA         	movff	??_Interrupt+7,fsr2h
+   627  0000DE  C008  FFD9         	movff	??_Interrupt+6,fsr2l
+   628  0000E2  C007  FFE2         	movff	??_Interrupt+5,fsr1h
+   629  0000E6  C006  FFE1         	movff	??_Interrupt+4,fsr1l
+   630  0000EA  C005  FFEA         	movff	??_Interrupt+3,fsr0h
+   631  0000EE  C004  FFE9         	movff	??_Interrupt+2,fsr0l
+   632  0000F2  C003  FFFB         	movff	??_Interrupt+1,pclatu
+   633  0000F6  C002  FFFA         	movff	??_Interrupt,pclath
+   634  0000FA  9220               	bcf	btemp,1,c	;clear compiler interrupt flag (level 2)
+   635  0000FC  0011               	retfie		f
+   636  0000FE                     __end_of_Interrupt:
+   637                           	opt stack 0
+   638                           pclatu	equ	0xFFB
+   639                           pclath	equ	0xFFA
+   640                           tblptru	equ	0xFF8
+   641                           tblptrh	equ	0xFF7
+   642                           tblptrl	equ	0xFF6
+   643                           tablat	equ	0xFF5
+   644                           prodh	equ	0xFF4
+   645                           prodl	equ	0xFF3
+   646                           intcon	equ	0xFF2
+   647                           intcon2	equ	0xFF1
+   648                           postinc0	equ	0xFEE
+   649                           fsr0h	equ	0xFEA
+   650                           fsr0l	equ	0xFE9
+   651                           wreg	equ	0xFE8
+   652                           postdec1	equ	0xFE5
+   653                           fsr1h	equ	0xFE2
+   654                           fsr1l	equ	0xFE1
+   655                           fsr2h	equ	0xFDA
+   656                           fsr2l	equ	0xFD9
+   657                           status	equ	0xFD8
+   658                           
+   659 ;; *************** function _WriteMotor2Output *****************
+   660 ;; Defined at:
+   661 ;;		line 110 in file "main.c"
+   662 ;; Parameters:    Size  Location     Type
+   663 ;;  output          1    wreg     unsigned char 
+   664 ;; Auto vars:     Size  Location     Type
+   665 ;;  output          1    0[COMRAM] unsigned char 
+   666 ;; Return value:  Size  Location     Type
+   667 ;;		None               void
+   668 ;; Registers used:
+   669 ;;		wreg
+   670 ;; Tracked objects:
+   671 ;;		On entry : 0/0
+   672 ;;		On exit  : 0/0
+   673 ;;		Unchanged: 0/0
+   674 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   675 ;;      Params:         0       0       0       0
+   676 ;;      Locals:         1       0       0       0
+   677 ;;      Temps:          0       0       0       0
+   678 ;;      Totals:         1       0       0       0
+   679 ;;Total ram usage:        1 bytes
+   680 ;; Hardware stack levels used:    1
+   681 ;; This function calls:
+   682 ;;		Nothing
+   683 ;; This function is called by:
+   684 ;;		_Interrupt
+   685 ;; This function uses a non-reentrant model
+   686 ;;
+   687                           
+   688                           	psect	text5
+   689  0002A2                     __ptext5:
+   690                           	opt stack 0
+   691  0002A2                     _WriteMotor2Output:
+   692                           	opt stack 28
+   693                           
+   694                           ;incstack = 0
+   695                           ;WriteMotor2Output@output stored from wreg
+   696  0002A2  6E01               	movwf	WriteMotor2Output@output,c
+   697                           
+   698                           ;main.c: 112: RC4 = output;
+   699  0002A4  A001               	btfss	WriteMotor2Output@output,0,c
+   700  0002A6  D002               	goto	i2u23_40
+   701  0002A8  8882               	bsf	3970,4,c	;volatile
+   702  0002AA  0012               	return	
+   703  0002AC                     i2u23_40:
+   704  0002AC  9882               	bcf	3970,4,c	;volatile
+   705  0002AE  0012               	return		;funcret
+   706  0002B0                     __end_of_WriteMotor2Output:
+   707                           	opt stack 0
+   708                           pclatu	equ	0xFFB
+   709                           pclath	equ	0xFFA
+   710                           tblptru	equ	0xFF8
+   711                           tblptrh	equ	0xFF7
+   712                           tblptrl	equ	0xFF6
+   713                           tablat	equ	0xFF5
+   714                           prodh	equ	0xFF4
+   715                           prodl	equ	0xFF3
+   716                           intcon	equ	0xFF2
+   717                           intcon2	equ	0xFF1
+   718                           postinc0	equ	0xFEE
+   719                           fsr0h	equ	0xFEA
+   720                           fsr0l	equ	0xFE9
+   721                           wreg	equ	0xFE8
+   722                           postdec1	equ	0xFE5
+   723                           fsr1h	equ	0xFE2
+   724                           fsr1l	equ	0xFE1
+   725                           fsr2h	equ	0xFDA
+   726                           fsr2l	equ	0xFD9
+   727                           status	equ	0xFD8
+   728                           
+   729 ;; *************** function _WriteMotor1Output *****************
+   730 ;; Defined at:
+   731 ;;		line 105 in file "main.c"
+   732 ;; Parameters:    Size  Location     Type
+   733 ;;  output          1    wreg     unsigned char 
+   734 ;; Auto vars:     Size  Location     Type
+   735 ;;  output          1    0[COMRAM] unsigned char 
+   736 ;; Return value:  Size  Location     Type
+   737 ;;		None               void
+   738 ;; Registers used:
+   739 ;;		wreg
+   740 ;; Tracked objects:
+   741 ;;		On entry : 0/0
+   742 ;;		On exit  : 0/0
+   743 ;;		Unchanged: 0/0
+   744 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   745 ;;      Params:         0       0       0       0
+   746 ;;      Locals:         1       0       0       0
+   747 ;;      Temps:          0       0       0       0
+   748 ;;      Totals:         1       0       0       0
+   749 ;;Total ram usage:        1 bytes
+   750 ;; Hardware stack levels used:    1
+   751 ;; This function calls:
+   752 ;;		Nothing
+   753 ;; This function is called by:
+   754 ;;		_Interrupt
+   755 ;; This function uses a non-reentrant model
+   756 ;;
+   757                           
+   758                           	psect	text6
+   759  0002B0                     __ptext6:
+   760                           	opt stack 0
+   761  0002B0                     _WriteMotor1Output:
+   762                           	opt stack 28
+   763                           
+   764                           ;incstack = 0
+   765                           ;WriteMotor1Output@output stored from wreg
+   766  0002B0  6E01               	movwf	WriteMotor1Output@output,c
+   767                           
+   768                           ;main.c: 107: RC3 = output;
+   769  0002B2  A001               	btfss	WriteMotor1Output@output,0,c
+   770  0002B4  D002               	goto	i2u21_40
+   771  0002B6  8682               	bsf	3970,3,c	;volatile
+   772  0002B8  0012               	return	
+   773  0002BA                     i2u21_40:
+   774  0002BA  9682               	bcf	3970,3,c	;volatile
+   775  0002BC  0012               	return		;funcret
+   776  0002BE                     __end_of_WriteMotor1Output:
+   777                           	opt stack 0
+   778                           pclatu	equ	0xFFB
+   779                           pclath	equ	0xFFA
+   780                           tblptru	equ	0xFF8
+   781                           tblptrh	equ	0xFF7
+   782                           tblptrl	equ	0xFF6
+   783                           tablat	equ	0xFF5
+   784                           prodh	equ	0xFF4
+   785                           prodl	equ	0xFF3
+   786                           intcon	equ	0xFF2
+   787                           intcon2	equ	0xFF1
+   788                           postinc0	equ	0xFEE
+   789                           fsr0h	equ	0xFEA
+   790                           fsr0l	equ	0xFE9
+   791                           wreg	equ	0xFE8
+   792                           postdec1	equ	0xFE5
+   793                           fsr1h	equ	0xFE2
+   794                           fsr1l	equ	0xFE1
+   795                           fsr2h	equ	0xFDA
+   796                           fsr2l	equ	0xFD9
+   797                           status	equ	0xFD8
+   798                           
+   799 ;; *************** function _MonitorRelayButton *****************
+   800 ;; Defined at:
+   801 ;;		line 248 in file "main.c"
+   802 ;; Parameters:    Size  Location     Type
+   803 ;;		None
+   804 ;; Auto vars:     Size  Location     Type
+   805 ;;		None
+   806 ;; Return value:  Size  Location     Type
+   807 ;;		None               void
+   808 ;; Registers used:
+   809 ;;		wreg, status,2, status,0, cstack
+   810 ;; Tracked objects:
+   811 ;;		On entry : 0/0
+   812 ;;		On exit  : 0/0
+   813 ;;		Unchanged: 0/0
+   814 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   815 ;;      Params:         0       0       0       0
+   816 ;;      Locals:         0       0       0       0
+   817 ;;      Temps:          0       0       0       0
+   818 ;;      Totals:         0       0       0       0
+   819 ;;Total ram usage:        0 bytes
+   820 ;; Hardware stack levels used:    1
+   821 ;; Hardware stack levels required when called:    1
+   822 ;; This function calls:
+   823 ;;		_ToggleRelayOutput
+   824 ;; This function is called by:
+   825 ;;		_Interrupt
+   826 ;; This function uses a non-reentrant model
+   827 ;;
+   828                           
+   829                           	psect	text7
+   830  000138                     __ptext7:
+   831                           	opt stack 0
+   832  000138                     _MonitorRelayButton:
+   833                           	opt stack 27
+   834                           
+   835                           ;main.c: 250: if((RB5 == 0) && (pressReleaseFlagRelay == 0))
+   836                           
+   837                           ;incstack = 0
+   838  000138  BA81               	btfsc	3969,5,c	;volatile
+   839  00013A  D008               	goto	i2l138
+   840  00013C  501B               	movf	_pressReleaseFlagRelay,w,c
+   841  00013E  A4D8               	btfss	status,2,c
+   842  000140  D005               	goto	i2l138
+   843                           
+   844                           ;main.c: 251: {
+   845                           ;main.c: 252: ToggleRelayOutput();
+   846  000142  EC6F  F001         	call	_ToggleRelayOutput	;wreg free
+   847                           
+   848                           ;main.c: 253: pressReleaseFlagRelay = 1;
+   849  000146  0E01               	movlw	1
+   850  000148  6E1B               	movwf	_pressReleaseFlagRelay,c
+   851                           
+   852                           ;main.c: 254: }
+   853  00014A  0012               	return	
+   854  00014C                     i2l138:
+   855                           
+   856                           ;main.c: 255: else if((RB5 == 1) && (pressReleaseFlagRelay == 1))
+   857  00014C  AA81               	btfss	3969,5,c	;volatile
+   858  00014E  0012               	return	
+   859  000150  041B               	decf	_pressReleaseFlagRelay,w,c
+   860  000152  A4D8               	btfss	status,2,c
+   861  000154  0012               	return	
+   862                           
+   863                           ;main.c: 256: {
+   864                           ;main.c: 257: pressReleaseFlagRelay = 0;
+   865  000156  0E00               	movlw	0
+   866  000158  6E1B               	movwf	_pressReleaseFlagRelay,c
+   867  00015A  0012               	return	
+   868  00015C                     __end_of_MonitorRelayButton:
+   869                           	opt stack 0
+   870                           pclatu	equ	0xFFB
+   871                           pclath	equ	0xFFA
+   872                           tblptru	equ	0xFF8
+   873                           tblptrh	equ	0xFF7
+   874                           tblptrl	equ	0xFF6
+   875                           tablat	equ	0xFF5
+   876                           prodh	equ	0xFF4
+   877                           prodl	equ	0xFF3
+   878                           intcon	equ	0xFF2
+   879                           intcon2	equ	0xFF1
+   880                           postinc0	equ	0xFEE
+   881                           fsr0h	equ	0xFEA
+   882                           fsr0l	equ	0xFE9
+   883                           wreg	equ	0xFE8
+   884                           postdec1	equ	0xFE5
+   885                           fsr1h	equ	0xFE2
+   886                           fsr1l	equ	0xFE1
+   887                           fsr2h	equ	0xFDA
+   888                           fsr2l	equ	0xFD9
+   889                           status	equ	0xFD8
+   890                           
+   891 ;; *************** function _ToggleRelayOutput *****************
+   892 ;; Defined at:
+   893 ;;		line 115 in file "main.c"
+   894 ;; Parameters:    Size  Location     Type
+   895 ;;		None
+   896 ;; Auto vars:     Size  Location     Type
+   897 ;;		None
+   898 ;; Return value:  Size  Location     Type
+   899 ;;		None               void
+   900 ;; Registers used:
+   901 ;;		None
+   902 ;; Tracked objects:
+   903 ;;		On entry : 0/0
+   904 ;;		On exit  : 0/0
+   905 ;;		Unchanged: 0/0
+   906 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   907 ;;      Params:         0       0       0       0
+   908 ;;      Locals:         0       0       0       0
+   909 ;;      Temps:          0       0       0       0
+   910 ;;      Totals:         0       0       0       0
+   911 ;;Total ram usage:        0 bytes
+   912 ;; Hardware stack levels used:    1
+   913 ;; This function calls:
+   914 ;;		Nothing
+   915 ;; This function is called by:
+   916 ;;		_MonitorRelayButton
+   917 ;; This function uses a non-reentrant model
+   918 ;;
+   919                           
+   920                           	psect	text8
+   921  0002DE                     __ptext8:
+   922                           	opt stack 0
+   923  0002DE                     _ToggleRelayOutput:
+   924                           	opt stack 27
+   925                           
+   926                           ;main.c: 117: RC5 ^= 1;
+   927                           
+   928                           ;incstack = 0
+   929  0002DE  7A82               	btg	3970,5,c	;volatile
+   930  0002E0  0012               	return		;funcret
+   931  0002E2                     __end_of_ToggleRelayOutput:
+   932                           	opt stack 0
+   933                           pclatu	equ	0xFFB
+   934                           pclath	equ	0xFFA
+   935                           tblptru	equ	0xFF8
+   936                           tblptrh	equ	0xFF7
+   937                           tblptrl	equ	0xFF6
+   938                           tablat	equ	0xFF5
+   939                           prodh	equ	0xFF4
+   940                           prodl	equ	0xFF3
+   941                           intcon	equ	0xFF2
+   942                           intcon2	equ	0xFF1
+   943                           postinc0	equ	0xFEE
+   944                           fsr0h	equ	0xFEA
+   945                           fsr0l	equ	0xFE9
+   946                           wreg	equ	0xFE8
+   947                           postdec1	equ	0xFE5
+   948                           fsr1h	equ	0xFE2
+   949                           fsr1l	equ	0xFE1
+   950                           fsr2h	equ	0xFDA
+   951                           fsr2l	equ	0xFD9
+   952                           status	equ	0xFD8
+   953                           
+   954 ;; *************** function _MonitorMotor2Buttons *****************
+   955 ;; Defined at:
+   956 ;;		line 242 in file "main.c"
+   957 ;; Parameters:    Size  Location     Type
+   958 ;;		None
+   959 ;; Auto vars:     Size  Location     Type
+   960 ;;		None
+   961 ;; Return value:  Size  Location     Type
+   962 ;;		None               void
+   963 ;; Registers used:
+   964 ;;		wreg, status,2, status,0, cstack
+   965 ;; Tracked objects:
+   966 ;;		On entry : 0/0
+   967 ;;		On exit  : 0/0
+   968 ;;		Unchanged: 0/0
+   969 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+   970 ;;      Params:         0       0       0       0
+   971 ;;      Locals:         0       0       0       0
+   972 ;;      Temps:          0       0       0       0
+   973 ;;      Totals:         0       0       0       0
+   974 ;;Total ram usage:        0 bytes
+   975 ;; Hardware stack levels used:    1
+   976 ;; Hardware stack levels required when called:    2
+   977 ;; This function calls:
+   978 ;;		_MonitorMotor2DecrementButton
+   979 ;;		_MonitorMotor2IncrementButton
+   980 ;; This function is called by:
+   981 ;;		_Interrupt
+   982 ;; This function uses a non-reentrant model
+   983 ;;
+   984                           
+   985                           	psect	text9
+   986  0002BE                     __ptext9:
+   987                           	opt stack 0
+   988  0002BE                     _MonitorMotor2Buttons:
+   989                           	opt stack 26
+   990                           
+   991                           ;main.c: 244: MonitorMotor2IncrementButton();
+   992                           
+   993                           ;incstack = 0
+   994  0002BE  ECAE  F000         	call	_MonitorMotor2IncrementButton	;wreg free
+   995                           
+   996                           ;main.c: 245: MonitorMotor2DecrementButton();
+   997  0002C2  ECC0  F000         	call	_MonitorMotor2DecrementButton	;wreg free
+   998  0002C6  0012               	return		;funcret
+   999  0002C8                     __end_of_MonitorMotor2Buttons:
+  1000                           	opt stack 0
+  1001                           pclatu	equ	0xFFB
+  1002                           pclath	equ	0xFFA
+  1003                           tblptru	equ	0xFF8
+  1004                           tblptrh	equ	0xFF7
+  1005                           tblptrl	equ	0xFF6
+  1006                           tablat	equ	0xFF5
+  1007                           prodh	equ	0xFF4
+  1008                           prodl	equ	0xFF3
+  1009                           intcon	equ	0xFF2
+  1010                           intcon2	equ	0xFF1
+  1011                           postinc0	equ	0xFEE
+  1012                           fsr0h	equ	0xFEA
+  1013                           fsr0l	equ	0xFE9
+  1014                           wreg	equ	0xFE8
+  1015                           postdec1	equ	0xFE5
+  1016                           fsr1h	equ	0xFE2
+  1017                           fsr1l	equ	0xFE1
+  1018                           fsr2h	equ	0xFDA
+  1019                           fsr2l	equ	0xFD9
+  1020                           status	equ	0xFD8
+  1021                           
+  1022 ;; *************** function _MonitorMotor2IncrementButton *****************
+  1023 ;; Defined at:
+  1024 ;;		line 197 in file "main.c"
+  1025 ;; Parameters:    Size  Location     Type
+  1026 ;;		None
+  1027 ;; Auto vars:     Size  Location     Type
+  1028 ;;		None
+  1029 ;; Return value:  Size  Location     Type
+  1030 ;;		None               void
+  1031 ;; Registers used:
+  1032 ;;		wreg, status,2, status,0, cstack
+  1033 ;; Tracked objects:
+  1034 ;;		On entry : 0/0
+  1035 ;;		On exit  : 0/0
+  1036 ;;		Unchanged: 0/0
+  1037 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1038 ;;      Params:         0       0       0       0
+  1039 ;;      Locals:         0       0       0       0
+  1040 ;;      Temps:          0       0       0       0
+  1041 ;;      Totals:         0       0       0       0
+  1042 ;;Total ram usage:        0 bytes
+  1043 ;; Hardware stack levels used:    1
+  1044 ;; Hardware stack levels required when called:    1
+  1045 ;; This function calls:
+  1046 ;;		_IncrementMotor2DutyCycle
+  1047 ;; This function is called by:
+  1048 ;;		_MonitorMotor2Buttons
+  1049 ;; This function uses a non-reentrant model
+  1050 ;;
+  1051                           
+  1052                           	psect	text10
+  1053  00015C                     __ptext10:
+  1054                           	opt stack 0
+  1055  00015C                     _MonitorMotor2IncrementButton:
+  1056                           	opt stack 26
+  1057                           
+  1058                           ;main.c: 199: if((RB2 == 0) && (pressReleaseFlag3 == 0))
+  1059                           
+  1060                           ;incstack = 0
+  1061  00015C  B481               	btfsc	3969,2,c	;volatile
+  1062  00015E  D008               	goto	i2l114
+  1063  000160  5018               	movf	_pressReleaseFlag3,w,c
+  1064  000162  A4D8               	btfss	status,2,c
+  1065  000164  D005               	goto	i2l114
+  1066                           
+  1067                           ;main.c: 200: {
+  1068                           ;main.c: 201: IncrementMotor2DutyCycle();
+  1069  000166  EC08  F001         	call	_IncrementMotor2DutyCycle	;wreg free
+  1070                           
+  1071                           ;main.c: 202: pressReleaseFlag3 = 1;
+  1072  00016A  0E01               	movlw	1
+  1073  00016C  6E18               	movwf	_pressReleaseFlag3,c
+  1074                           
+  1075                           ;main.c: 203: }
+  1076  00016E  0012               	return	
+  1077  000170                     i2l114:
+  1078                           
+  1079                           ;main.c: 204: else if((RB2 == 1) && (pressReleaseFlag3 == 1))
+  1080  000170  A481               	btfss	3969,2,c	;volatile
+  1081  000172  0012               	return	
+  1082  000174  0418               	decf	_pressReleaseFlag3,w,c
+  1083  000176  A4D8               	btfss	status,2,c
+  1084  000178  0012               	return	
+  1085                           
+  1086                           ;main.c: 205: {
+  1087                           ;main.c: 206: pressReleaseFlag3 = 0;
+  1088  00017A  0E00               	movlw	0
+  1089  00017C  6E18               	movwf	_pressReleaseFlag3,c
+  1090  00017E  0012               	return	
+  1091  000180                     __end_of_MonitorMotor2IncrementButton:
+  1092                           	opt stack 0
+  1093                           pclatu	equ	0xFFB
+  1094                           pclath	equ	0xFFA
+  1095                           tblptru	equ	0xFF8
+  1096                           tblptrh	equ	0xFF7
+  1097                           tblptrl	equ	0xFF6
+  1098                           tablat	equ	0xFF5
+  1099                           prodh	equ	0xFF4
+  1100                           prodl	equ	0xFF3
+  1101                           intcon	equ	0xFF2
+  1102                           intcon2	equ	0xFF1
+  1103                           postinc0	equ	0xFEE
+  1104                           fsr0h	equ	0xFEA
+  1105                           fsr0l	equ	0xFE9
+  1106                           wreg	equ	0xFE8
+  1107                           postdec1	equ	0xFE5
+  1108                           fsr1h	equ	0xFE2
+  1109                           fsr1l	equ	0xFE1
+  1110                           fsr2h	equ	0xFDA
+  1111                           fsr2l	equ	0xFD9
+  1112                           status	equ	0xFD8
+  1113                           
+  1114 ;; *************** function _IncrementMotor2DutyCycle *****************
+  1115 ;; Defined at:
+  1116 ;;		line 149 in file "main.c"
+  1117 ;; Parameters:    Size  Location     Type
+  1118 ;;		None
+  1119 ;; Auto vars:     Size  Location     Type
+  1120 ;;		None
+  1121 ;; Return value:  Size  Location     Type
+  1122 ;;		None               void
+  1123 ;; Registers used:
+  1124 ;;		wreg, status,2, status,0
+  1125 ;; Tracked objects:
+  1126 ;;		On entry : 0/0
+  1127 ;;		On exit  : 0/0
+  1128 ;;		Unchanged: 0/0
+  1129 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1130 ;;      Params:         0       0       0       0
+  1131 ;;      Locals:         0       0       0       0
+  1132 ;;      Temps:          0       0       0       0
+  1133 ;;      Totals:         0       0       0       0
+  1134 ;;Total ram usage:        0 bytes
+  1135 ;; Hardware stack levels used:    1
+  1136 ;; This function calls:
+  1137 ;;		Nothing
+  1138 ;; This function is called by:
+  1139 ;;		_MonitorMotor2IncrementButton
+  1140 ;; This function uses a non-reentrant model
+  1141 ;;
+  1142                           
+  1143                           	psect	text11
+  1144  000210                     __ptext11:
+  1145                           	opt stack 0
+  1146  000210                     _IncrementMotor2DutyCycle:
+  1147                           	opt stack 26
+  1148                           
+  1149                           ;main.c: 151: if(dutyCycle2 < 2000)
+  1150                           
+  1151                           ;incstack = 0
+  1152  000210  0ED0               	movlw	208
+  1153  000212  5C1E               	subwf	_dutyCycle2,w,c
+  1154  000214  0E07               	movlw	7
+  1155  000216  581F               	subwfb	_dutyCycle2+1,w,c
+  1156  000218  B0D8               	btfsc	status,0,c
+  1157  00021A  0012               	return	
+  1158                           
+  1159                           ;main.c: 152: {
+  1160                           ;main.c: 153: dutyCycle2 += 200;
+  1161  00021C  0EC8               	movlw	200
+  1162  00021E  261E               	addwf	_dutyCycle2,f,c
+  1163  000220  0E00               	movlw	0
+  1164  000222  221F               	addwfc	_dutyCycle2+1,f,c
+  1165  000224  0012               	return	
+  1166  000226                     __end_of_IncrementMotor2DutyCycle:
+  1167                           	opt stack 0
+  1168                           pclatu	equ	0xFFB
+  1169                           pclath	equ	0xFFA
+  1170                           tblptru	equ	0xFF8
+  1171                           tblptrh	equ	0xFF7
+  1172                           tblptrl	equ	0xFF6
+  1173                           tablat	equ	0xFF5
+  1174                           prodh	equ	0xFF4
+  1175                           prodl	equ	0xFF3
+  1176                           intcon	equ	0xFF2
+  1177                           intcon2	equ	0xFF1
+  1178                           postinc0	equ	0xFEE
+  1179                           fsr0h	equ	0xFEA
+  1180                           fsr0l	equ	0xFE9
+  1181                           wreg	equ	0xFE8
+  1182                           postdec1	equ	0xFE5
+  1183                           fsr1h	equ	0xFE2
+  1184                           fsr1l	equ	0xFE1
+  1185                           fsr2h	equ	0xFDA
+  1186                           fsr2l	equ	0xFD9
+  1187                           status	equ	0xFD8
+  1188                           
+  1189 ;; *************** function _MonitorMotor2DecrementButton *****************
+  1190 ;; Defined at:
+  1191 ;;		line 210 in file "main.c"
+  1192 ;; Parameters:    Size  Location     Type
+  1193 ;;		None
+  1194 ;; Auto vars:     Size  Location     Type
+  1195 ;;		None
+  1196 ;; Return value:  Size  Location     Type
+  1197 ;;		None               void
+  1198 ;; Registers used:
+  1199 ;;		wreg, status,2, status,0, cstack
+  1200 ;; Tracked objects:
+  1201 ;;		On entry : 0/0
+  1202 ;;		On exit  : 0/0
+  1203 ;;		Unchanged: 0/0
+  1204 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1205 ;;      Params:         0       0       0       0
+  1206 ;;      Locals:         0       0       0       0
+  1207 ;;      Temps:          0       0       0       0
+  1208 ;;      Totals:         0       0       0       0
+  1209 ;;Total ram usage:        0 bytes
+  1210 ;; Hardware stack levels used:    1
+  1211 ;; Hardware stack levels required when called:    1
+  1212 ;; This function calls:
+  1213 ;;		_DecrementMotor2DutyCycle
+  1214 ;; This function is called by:
+  1215 ;;		_MonitorMotor2Buttons
+  1216 ;; This function uses a non-reentrant model
+  1217 ;;
+  1218                           
+  1219                           	psect	text12
+  1220  000180                     __ptext12:
+  1221                           	opt stack 0
+  1222  000180                     _MonitorMotor2DecrementButton:
+  1223                           	opt stack 26
+  1224                           
+  1225                           ;main.c: 212: if((RB3 == 0) && (pressReleaseFlag4 == 0))
+  1226                           
+  1227                           ;incstack = 0
+  1228  000180  B681               	btfsc	3969,3,c	;volatile
+  1229  000182  D008               	goto	i2l120
+  1230  000184  5019               	movf	_pressReleaseFlag4,w,c
+  1231  000186  A4D8               	btfss	status,2,c
+  1232  000188  D005               	goto	i2l120
+  1233                           
+  1234                           ;main.c: 213: {
+  1235                           ;main.c: 214: DecrementMotor2DutyCycle();
+  1236  00018A  EC28  F001         	call	_DecrementMotor2DutyCycle	;wreg free
+  1237                           
+  1238                           ;main.c: 215: pressReleaseFlag4 = 1;
+  1239  00018E  0E01               	movlw	1
+  1240  000190  6E19               	movwf	_pressReleaseFlag4,c
+  1241                           
+  1242                           ;main.c: 216: }
+  1243  000192  0012               	return	
+  1244  000194                     i2l120:
+  1245                           
+  1246                           ;main.c: 217: else if((RB3 == 1) && (pressReleaseFlag4 == 1))
+  1247  000194  A681               	btfss	3969,3,c	;volatile
+  1248  000196  0012               	return	
+  1249  000198  0419               	decf	_pressReleaseFlag4,w,c
+  1250  00019A  A4D8               	btfss	status,2,c
+  1251  00019C  0012               	return	
+  1252                           
+  1253                           ;main.c: 218: {
+  1254                           ;main.c: 219: pressReleaseFlag4 = 0;
+  1255  00019E  0E00               	movlw	0
+  1256  0001A0  6E19               	movwf	_pressReleaseFlag4,c
+  1257  0001A2  0012               	return	
+  1258  0001A4                     __end_of_MonitorMotor2DecrementButton:
+  1259                           	opt stack 0
+  1260                           pclatu	equ	0xFFB
+  1261                           pclath	equ	0xFFA
+  1262                           tblptru	equ	0xFF8
+  1263                           tblptrh	equ	0xFF7
+  1264                           tblptrl	equ	0xFF6
+  1265                           tablat	equ	0xFF5
+  1266                           prodh	equ	0xFF4
+  1267                           prodl	equ	0xFF3
+  1268                           intcon	equ	0xFF2
+  1269                           intcon2	equ	0xFF1
+  1270                           postinc0	equ	0xFEE
+  1271                           fsr0h	equ	0xFEA
+  1272                           fsr0l	equ	0xFE9
+  1273                           wreg	equ	0xFE8
+  1274                           postdec1	equ	0xFE5
+  1275                           fsr1h	equ	0xFE2
+  1276                           fsr1l	equ	0xFE1
+  1277                           fsr2h	equ	0xFDA
+  1278                           fsr2l	equ	0xFD9
+  1279                           status	equ	0xFD8
+  1280                           
+  1281 ;; *************** function _DecrementMotor2DutyCycle *****************
+  1282 ;; Defined at:
+  1283 ;;		line 157 in file "main.c"
+  1284 ;; Parameters:    Size  Location     Type
+  1285 ;;		None
+  1286 ;; Auto vars:     Size  Location     Type
+  1287 ;;		None
+  1288 ;; Return value:  Size  Location     Type
+  1289 ;;		None               void
+  1290 ;; Registers used:
+  1291 ;;		wreg, status,2, status,0
+  1292 ;; Tracked objects:
+  1293 ;;		On entry : 0/0
+  1294 ;;		On exit  : 0/0
+  1295 ;;		Unchanged: 0/0
+  1296 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1297 ;;      Params:         0       0       0       0
+  1298 ;;      Locals:         0       0       0       0
+  1299 ;;      Temps:          0       0       0       0
+  1300 ;;      Totals:         0       0       0       0
+  1301 ;;Total ram usage:        0 bytes
+  1302 ;; Hardware stack levels used:    1
+  1303 ;; This function calls:
+  1304 ;;		Nothing
+  1305 ;; This function is called by:
+  1306 ;;		_MonitorMotor2DecrementButton
+  1307 ;; This function uses a non-reentrant model
+  1308 ;;
+  1309                           
+  1310                           	psect	text13
+  1311  000250                     __ptext13:
+  1312                           	opt stack 0
+  1313  000250                     _DecrementMotor2DutyCycle:
+  1314                           	opt stack 26
+  1315                           
+  1316                           ;main.c: 159: if(dutyCycle2 > 0)
+  1317                           
+  1318                           ;incstack = 0
+  1319  000250  501E               	movf	_dutyCycle2,w,c
+  1320  000252  101F               	iorwf	_dutyCycle2+1,w,c
+  1321  000254  B4D8               	btfsc	status,2,c
+  1322  000256  0012               	return	
+  1323                           
+  1324                           ;main.c: 160: {
+  1325                           ;main.c: 161: dutyCycle2 -= 200;
+  1326  000258  0EC8               	movlw	200
+  1327  00025A  5E1E               	subwf	_dutyCycle2,f,c
+  1328  00025C  0E00               	movlw	0
+  1329  00025E  5A1F               	subwfb	_dutyCycle2+1,f,c
+  1330  000260  0012               	return	
+  1331  000262                     __end_of_DecrementMotor2DutyCycle:
+  1332                           	opt stack 0
+  1333                           pclatu	equ	0xFFB
+  1334                           pclath	equ	0xFFA
+  1335                           tblptru	equ	0xFF8
+  1336                           tblptrh	equ	0xFF7
+  1337                           tblptrl	equ	0xFF6
+  1338                           tablat	equ	0xFF5
+  1339                           prodh	equ	0xFF4
+  1340                           prodl	equ	0xFF3
+  1341                           intcon	equ	0xFF2
+  1342                           intcon2	equ	0xFF1
+  1343                           postinc0	equ	0xFEE
+  1344                           fsr0h	equ	0xFEA
+  1345                           fsr0l	equ	0xFE9
+  1346                           wreg	equ	0xFE8
+  1347                           postdec1	equ	0xFE5
+  1348                           fsr1h	equ	0xFE2
+  1349                           fsr1l	equ	0xFE1
+  1350                           fsr2h	equ	0xFDA
+  1351                           fsr2l	equ	0xFD9
+  1352                           status	equ	0xFD8
+  1353                           
+  1354 ;; *************** function _MonitorMotor1Buttons *****************
+  1355 ;; Defined at:
+  1356 ;;		line 236 in file "main.c"
+  1357 ;; Parameters:    Size  Location     Type
+  1358 ;;		None
+  1359 ;; Auto vars:     Size  Location     Type
+  1360 ;;		None
+  1361 ;; Return value:  Size  Location     Type
+  1362 ;;		None               void
+  1363 ;; Registers used:
+  1364 ;;		wreg, status,2, status,0, cstack
+  1365 ;; Tracked objects:
+  1366 ;;		On entry : 0/0
+  1367 ;;		On exit  : 0/0
+  1368 ;;		Unchanged: 0/0
+  1369 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1370 ;;      Params:         0       0       0       0
+  1371 ;;      Locals:         0       0       0       0
+  1372 ;;      Temps:          0       0       0       0
+  1373 ;;      Totals:         0       0       0       0
+  1374 ;;Total ram usage:        0 bytes
+  1375 ;; Hardware stack levels used:    1
+  1376 ;; Hardware stack levels required when called:    2
+  1377 ;; This function calls:
+  1378 ;;		_MonitorMotor1DecrementButton
+  1379 ;;		_MonitorMotor1IncrementButton
+  1380 ;; This function is called by:
+  1381 ;;		_Interrupt
+  1382 ;; This function uses a non-reentrant model
+  1383 ;;
+  1384                           
+  1385                           	psect	text14
+  1386  0002C8                     __ptext14:
+  1387                           	opt stack 0
+  1388  0002C8                     _MonitorMotor1Buttons:
+  1389                           	opt stack 26
+  1390                           
+  1391                           ;main.c: 238: MonitorMotor1IncrementButton();
+  1392                           
+  1393                           ;incstack = 0
+  1394  0002C8  ECD2  F000         	call	_MonitorMotor1IncrementButton	;wreg free
+  1395                           
+  1396                           ;main.c: 239: MonitorMotor1DecrementButton();
+  1397  0002CC  ECE4  F000         	call	_MonitorMotor1DecrementButton	;wreg free
+  1398  0002D0  0012               	return		;funcret
+  1399  0002D2                     __end_of_MonitorMotor1Buttons:
+  1400                           	opt stack 0
+  1401                           pclatu	equ	0xFFB
+  1402                           pclath	equ	0xFFA
+  1403                           tblptru	equ	0xFF8
+  1404                           tblptrh	equ	0xFF7
+  1405                           tblptrl	equ	0xFF6
+  1406                           tablat	equ	0xFF5
+  1407                           prodh	equ	0xFF4
+  1408                           prodl	equ	0xFF3
+  1409                           intcon	equ	0xFF2
+  1410                           intcon2	equ	0xFF1
+  1411                           postinc0	equ	0xFEE
+  1412                           fsr0h	equ	0xFEA
+  1413                           fsr0l	equ	0xFE9
+  1414                           wreg	equ	0xFE8
+  1415                           postdec1	equ	0xFE5
+  1416                           fsr1h	equ	0xFE2
+  1417                           fsr1l	equ	0xFE1
+  1418                           fsr2h	equ	0xFDA
+  1419                           fsr2l	equ	0xFD9
+  1420                           status	equ	0xFD8
+  1421                           
+  1422 ;; *************** function _MonitorMotor1IncrementButton *****************
+  1423 ;; Defined at:
+  1424 ;;		line 171 in file "main.c"
+  1425 ;; Parameters:    Size  Location     Type
+  1426 ;;		None
+  1427 ;; Auto vars:     Size  Location     Type
+  1428 ;;		None
+  1429 ;; Return value:  Size  Location     Type
+  1430 ;;		None               void
+  1431 ;; Registers used:
+  1432 ;;		wreg, status,2, status,0, cstack
+  1433 ;; Tracked objects:
+  1434 ;;		On entry : 0/0
+  1435 ;;		On exit  : 0/0
+  1436 ;;		Unchanged: 0/0
+  1437 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1438 ;;      Params:         0       0       0       0
+  1439 ;;      Locals:         0       0       0       0
+  1440 ;;      Temps:          0       0       0       0
+  1441 ;;      Totals:         0       0       0       0
+  1442 ;;Total ram usage:        0 bytes
+  1443 ;; Hardware stack levels used:    1
+  1444 ;; Hardware stack levels required when called:    1
+  1445 ;; This function calls:
+  1446 ;;		_IncrementMotor1DutyCycle
+  1447 ;; This function is called by:
+  1448 ;;		_MonitorMotor1Buttons
+  1449 ;; This function uses a non-reentrant model
+  1450 ;;
+  1451                           
+  1452                           	psect	text15
+  1453  0001A4                     __ptext15:
+  1454                           	opt stack 0
+  1455  0001A4                     _MonitorMotor1IncrementButton:
+  1456                           	opt stack 26
+  1457                           
+  1458                           ;main.c: 173: if((RB0 == 0) && (pressReleaseFlag1 == 0))
+  1459                           
+  1460                           ;incstack = 0
+  1461  0001A4  B081               	btfsc	3969,0,c	;volatile
+  1462  0001A6  D008               	goto	i2l102
+  1463  0001A8  5016               	movf	_pressReleaseFlag1,w,c
+  1464  0001AA  A4D8               	btfss	status,2,c
+  1465  0001AC  D005               	goto	i2l102
+  1466                           
+  1467                           ;main.c: 174: {
+  1468                           ;main.c: 175: IncrementMotor1DutyCycle();
+  1469  0001AE  EC13  F001         	call	_IncrementMotor1DutyCycle	;wreg free
+  1470                           
+  1471                           ;main.c: 176: pressReleaseFlag1 = 1;
+  1472  0001B2  0E01               	movlw	1
+  1473  0001B4  6E16               	movwf	_pressReleaseFlag1,c
+  1474                           
+  1475                           ;main.c: 177: }
+  1476  0001B6  0012               	return	
+  1477  0001B8                     i2l102:
+  1478                           
+  1479                           ;main.c: 178: else if((RB0 == 1) && (pressReleaseFlag1 == 1))
+  1480  0001B8  A081               	btfss	3969,0,c	;volatile
+  1481  0001BA  0012               	return	
+  1482  0001BC  0416               	decf	_pressReleaseFlag1,w,c
+  1483  0001BE  A4D8               	btfss	status,2,c
+  1484  0001C0  0012               	return	
+  1485                           
+  1486                           ;main.c: 179: {
+  1487                           ;main.c: 180: pressReleaseFlag1 = 0;
+  1488  0001C2  0E00               	movlw	0
+  1489  0001C4  6E16               	movwf	_pressReleaseFlag1,c
+  1490  0001C6  0012               	return	
+  1491  0001C8                     __end_of_MonitorMotor1IncrementButton:
+  1492                           	opt stack 0
+  1493                           pclatu	equ	0xFFB
+  1494                           pclath	equ	0xFFA
+  1495                           tblptru	equ	0xFF8
+  1496                           tblptrh	equ	0xFF7
+  1497                           tblptrl	equ	0xFF6
+  1498                           tablat	equ	0xFF5
+  1499                           prodh	equ	0xFF4
+  1500                           prodl	equ	0xFF3
+  1501                           intcon	equ	0xFF2
+  1502                           intcon2	equ	0xFF1
+  1503                           postinc0	equ	0xFEE
+  1504                           fsr0h	equ	0xFEA
+  1505                           fsr0l	equ	0xFE9
+  1506                           wreg	equ	0xFE8
+  1507                           postdec1	equ	0xFE5
+  1508                           fsr1h	equ	0xFE2
+  1509                           fsr1l	equ	0xFE1
+  1510                           fsr2h	equ	0xFDA
+  1511                           fsr2l	equ	0xFD9
+  1512                           status	equ	0xFD8
+  1513                           
+  1514 ;; *************** function _IncrementMotor1DutyCycle *****************
+  1515 ;; Defined at:
+  1516 ;;		line 133 in file "main.c"
+  1517 ;; Parameters:    Size  Location     Type
+  1518 ;;		None
+  1519 ;; Auto vars:     Size  Location     Type
+  1520 ;;		None
+  1521 ;; Return value:  Size  Location     Type
+  1522 ;;		None               void
+  1523 ;; Registers used:
+  1524 ;;		wreg, status,2, status,0
+  1525 ;; Tracked objects:
+  1526 ;;		On entry : 0/0
+  1527 ;;		On exit  : 0/0
+  1528 ;;		Unchanged: 0/0
+  1529 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1530 ;;      Params:         0       0       0       0
+  1531 ;;      Locals:         0       0       0       0
+  1532 ;;      Temps:          0       0       0       0
+  1533 ;;      Totals:         0       0       0       0
+  1534 ;;Total ram usage:        0 bytes
+  1535 ;; Hardware stack levels used:    1
+  1536 ;; This function calls:
+  1537 ;;		Nothing
+  1538 ;; This function is called by:
+  1539 ;;		_MonitorMotor1IncrementButton
+  1540 ;; This function uses a non-reentrant model
+  1541 ;;
+  1542                           
+  1543                           	psect	text16
+  1544  000226                     __ptext16:
+  1545                           	opt stack 0
+  1546  000226                     _IncrementMotor1DutyCycle:
+  1547                           	opt stack 26
+  1548                           
+  1549                           ;main.c: 135: if(dutyCycle1 < 2000)
+  1550                           
+  1551                           ;incstack = 0
+  1552  000226  0ED0               	movlw	208
+  1553  000228  5C1C               	subwf	_dutyCycle1,w,c
+  1554  00022A  0E07               	movlw	7
+  1555  00022C  581D               	subwfb	_dutyCycle1+1,w,c
+  1556  00022E  B0D8               	btfsc	status,0,c
+  1557  000230  0012               	return	
+  1558                           
+  1559                           ;main.c: 136: {
+  1560                           ;main.c: 137: dutyCycle1 += 200;
+  1561  000232  0EC8               	movlw	200
+  1562  000234  261C               	addwf	_dutyCycle1,f,c
+  1563  000236  0E00               	movlw	0
+  1564  000238  221D               	addwfc	_dutyCycle1+1,f,c
+  1565  00023A  0012               	return	
+  1566  00023C                     __end_of_IncrementMotor1DutyCycle:
+  1567                           	opt stack 0
+  1568                           pclatu	equ	0xFFB
+  1569                           pclath	equ	0xFFA
+  1570                           tblptru	equ	0xFF8
+  1571                           tblptrh	equ	0xFF7
+  1572                           tblptrl	equ	0xFF6
+  1573                           tablat	equ	0xFF5
+  1574                           prodh	equ	0xFF4
+  1575                           prodl	equ	0xFF3
+  1576                           intcon	equ	0xFF2
+  1577                           intcon2	equ	0xFF1
+  1578                           postinc0	equ	0xFEE
+  1579                           fsr0h	equ	0xFEA
+  1580                           fsr0l	equ	0xFE9
+  1581                           wreg	equ	0xFE8
+  1582                           postdec1	equ	0xFE5
+  1583                           fsr1h	equ	0xFE2
+  1584                           fsr1l	equ	0xFE1
+  1585                           fsr2h	equ	0xFDA
+  1586                           fsr2l	equ	0xFD9
+  1587                           status	equ	0xFD8
+  1588                           
+  1589 ;; *************** function _MonitorMotor1DecrementButton *****************
+  1590 ;; Defined at:
+  1591 ;;		line 184 in file "main.c"
+  1592 ;; Parameters:    Size  Location     Type
+  1593 ;;		None
+  1594 ;; Auto vars:     Size  Location     Type
+  1595 ;;		None
+  1596 ;; Return value:  Size  Location     Type
+  1597 ;;		None               void
+  1598 ;; Registers used:
+  1599 ;;		wreg, status,2, status,0, cstack
+  1600 ;; Tracked objects:
+  1601 ;;		On entry : 0/0
+  1602 ;;		On exit  : 0/0
+  1603 ;;		Unchanged: 0/0
+  1604 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1605 ;;      Params:         0       0       0       0
+  1606 ;;      Locals:         0       0       0       0
+  1607 ;;      Temps:          0       0       0       0
+  1608 ;;      Totals:         0       0       0       0
+  1609 ;;Total ram usage:        0 bytes
+  1610 ;; Hardware stack levels used:    1
+  1611 ;; Hardware stack levels required when called:    1
+  1612 ;; This function calls:
+  1613 ;;		_DecrementMotor1DutyCycle
+  1614 ;; This function is called by:
+  1615 ;;		_MonitorMotor1Buttons
+  1616 ;; This function uses a non-reentrant model
+  1617 ;;
+  1618                           
+  1619                           	psect	text17
+  1620  0001C8                     __ptext17:
+  1621                           	opt stack 0
+  1622  0001C8                     _MonitorMotor1DecrementButton:
+  1623                           	opt stack 26
+  1624                           
+  1625                           ;main.c: 186: if((RB1 == 0) && (pressReleaseFlag2 == 0))
+  1626                           
+  1627                           ;incstack = 0
+  1628  0001C8  B281               	btfsc	3969,1,c	;volatile
+  1629  0001CA  D008               	goto	i2l108
+  1630  0001CC  5017               	movf	_pressReleaseFlag2,w,c
+  1631  0001CE  A4D8               	btfss	status,2,c
+  1632  0001D0  D005               	goto	i2l108
+  1633                           
+  1634                           ;main.c: 187: {
+  1635                           ;main.c: 188: DecrementMotor1DutyCycle();
+  1636  0001D2  EC31  F001         	call	_DecrementMotor1DutyCycle	;wreg free
+  1637                           
+  1638                           ;main.c: 189: pressReleaseFlag2 = 1;
+  1639  0001D6  0E01               	movlw	1
+  1640  0001D8  6E17               	movwf	_pressReleaseFlag2,c
+  1641                           
+  1642                           ;main.c: 190: }
+  1643  0001DA  0012               	return	
+  1644  0001DC                     i2l108:
+  1645                           
+  1646                           ;main.c: 191: else if((RB1 == 1) && (pressReleaseFlag2 == 1))
+  1647  0001DC  A281               	btfss	3969,1,c	;volatile
+  1648  0001DE  0012               	return	
+  1649  0001E0  0417               	decf	_pressReleaseFlag2,w,c
+  1650  0001E2  A4D8               	btfss	status,2,c
+  1651  0001E4  0012               	return	
+  1652                           
+  1653                           ;main.c: 192: {
+  1654                           ;main.c: 193: pressReleaseFlag2 = 0;
+  1655  0001E6  0E00               	movlw	0
+  1656  0001E8  6E17               	movwf	_pressReleaseFlag2,c
+  1657  0001EA  0012               	return	
+  1658  0001EC                     __end_of_MonitorMotor1DecrementButton:
+  1659                           	opt stack 0
+  1660                           pclatu	equ	0xFFB
+  1661                           pclath	equ	0xFFA
+  1662                           tblptru	equ	0xFF8
+  1663                           tblptrh	equ	0xFF7
+  1664                           tblptrl	equ	0xFF6
+  1665                           tablat	equ	0xFF5
+  1666                           prodh	equ	0xFF4
+  1667                           prodl	equ	0xFF3
+  1668                           intcon	equ	0xFF2
+  1669                           intcon2	equ	0xFF1
+  1670                           postinc0	equ	0xFEE
+  1671                           fsr0h	equ	0xFEA
+  1672                           fsr0l	equ	0xFE9
+  1673                           wreg	equ	0xFE8
+  1674                           postdec1	equ	0xFE5
+  1675                           fsr1h	equ	0xFE2
+  1676                           fsr1l	equ	0xFE1
+  1677                           fsr2h	equ	0xFDA
+  1678                           fsr2l	equ	0xFD9
+  1679                           status	equ	0xFD8
+  1680                           
+  1681 ;; *************** function _DecrementMotor1DutyCycle *****************
+  1682 ;; Defined at:
+  1683 ;;		line 141 in file "main.c"
+  1684 ;; Parameters:    Size  Location     Type
+  1685 ;;		None
+  1686 ;; Auto vars:     Size  Location     Type
+  1687 ;;		None
+  1688 ;; Return value:  Size  Location     Type
+  1689 ;;		None               void
+  1690 ;; Registers used:
+  1691 ;;		wreg, status,2, status,0
+  1692 ;; Tracked objects:
+  1693 ;;		On entry : 0/0
+  1694 ;;		On exit  : 0/0
+  1695 ;;		Unchanged: 0/0
+  1696 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1697 ;;      Params:         0       0       0       0
+  1698 ;;      Locals:         0       0       0       0
+  1699 ;;      Temps:          0       0       0       0
+  1700 ;;      Totals:         0       0       0       0
+  1701 ;;Total ram usage:        0 bytes
+  1702 ;; Hardware stack levels used:    1
+  1703 ;; This function calls:
+  1704 ;;		Nothing
+  1705 ;; This function is called by:
+  1706 ;;		_MonitorMotor1DecrementButton
+  1707 ;; This function uses a non-reentrant model
+  1708 ;;
+  1709                           
+  1710                           	psect	text18
+  1711  000262                     __ptext18:
+  1712                           	opt stack 0
+  1713  000262                     _DecrementMotor1DutyCycle:
+  1714                           	opt stack 26
+  1715                           
+  1716                           ;main.c: 143: if(dutyCycle1 > 0)
+  1717                           
+  1718                           ;incstack = 0
+  1719  000262  501C               	movf	_dutyCycle1,w,c
+  1720  000264  101D               	iorwf	_dutyCycle1+1,w,c
+  1721  000266  B4D8               	btfsc	status,2,c
+  1722  000268  0012               	return	
+  1723                           
+  1724                           ;main.c: 144: {
+  1725                           ;main.c: 145: dutyCycle1 -= 200;
+  1726  00026A  0EC8               	movlw	200
+  1727  00026C  5E1C               	subwf	_dutyCycle1,f,c
+  1728  00026E  0E00               	movlw	0
+  1729  000270  5A1D               	subwfb	_dutyCycle1+1,f,c
+  1730  000272  0012               	return	
+  1731  000274                     __end_of_DecrementMotor1DutyCycle:
+  1732                           	opt stack 0
+  1733                           pclatu	equ	0xFFB
+  1734                           pclath	equ	0xFFA
+  1735                           tblptru	equ	0xFF8
+  1736                           tblptrh	equ	0xFF7
+  1737                           tblptrl	equ	0xFF6
+  1738                           tablat	equ	0xFF5
+  1739                           prodh	equ	0xFF4
+  1740                           prodl	equ	0xFF3
+  1741                           intcon	equ	0xFF2
+  1742                           intcon2	equ	0xFF1
+  1743                           postinc0	equ	0xFEE
+  1744                           fsr0h	equ	0xFEA
+  1745                           fsr0l	equ	0xFE9
+  1746                           wreg	equ	0xFE8
+  1747                           postdec1	equ	0xFE5
+  1748                           fsr1h	equ	0xFE2
+  1749                           fsr1l	equ	0xFE1
+  1750                           fsr2h	equ	0xFDA
+  1751                           fsr2l	equ	0xFD9
+  1752                           status	equ	0xFD8
+  1753                           
+  1754 ;; *************** function _MonitorCenteringButton *****************
+  1755 ;; Defined at:
+  1756 ;;		line 223 in file "main.c"
+  1757 ;; Parameters:    Size  Location     Type
+  1758 ;;		None
+  1759 ;; Auto vars:     Size  Location     Type
+  1760 ;;		None
+  1761 ;; Return value:  Size  Location     Type
+  1762 ;;		None               void
+  1763 ;; Registers used:
+  1764 ;;		wreg, status,2, status,0, cstack
+  1765 ;; Tracked objects:
+  1766 ;;		On entry : 0/0
+  1767 ;;		On exit  : 0/0
+  1768 ;;		Unchanged: 0/0
+  1769 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1770 ;;      Params:         0       0       0       0
+  1771 ;;      Locals:         0       0       0       0
+  1772 ;;      Temps:          0       0       0       0
+  1773 ;;      Totals:         0       0       0       0
+  1774 ;;Total ram usage:        0 bytes
+  1775 ;; Hardware stack levels used:    1
+  1776 ;; Hardware stack levels required when called:    1
+  1777 ;; This function calls:
+  1778 ;;		_CenterMotors
+  1779 ;; This function is called by:
+  1780 ;;		_Interrupt
+  1781 ;; This function uses a non-reentrant model
+  1782 ;;
+  1783                           
+  1784                           	psect	text19
+  1785  0001EC                     __ptext19:
+  1786                           	opt stack 0
+  1787  0001EC                     _MonitorCenteringButton:
+  1788                           	opt stack 27
+  1789                           
+  1790                           ;main.c: 225: if((RB4 == 0) && (pressReleaseFlagCenter == 0))
+  1791                           
+  1792                           ;incstack = 0
+  1793  0001EC  B881               	btfsc	3969,4,c	;volatile
+  1794  0001EE  D008               	goto	i2l126
+  1795  0001F0  501A               	movf	_pressReleaseFlagCenter,w,c
+  1796  0001F2  A4D8               	btfss	status,2,c
+  1797  0001F4  D005               	goto	i2l126
+  1798                           
+  1799                           ;main.c: 226: {
+  1800                           ;main.c: 227: CenterMotors();
+  1801  0001F6  EC3A  F001         	call	_CenterMotors	;wreg free
+  1802                           
+  1803                           ;main.c: 228: pressReleaseFlagCenter = 1;
+  1804  0001FA  0E01               	movlw	1
+  1805  0001FC  6E1A               	movwf	_pressReleaseFlagCenter,c
+  1806                           
+  1807                           ;main.c: 229: }
+  1808  0001FE  0012               	return	
+  1809  000200                     i2l126:
+  1810                           
+  1811                           ;main.c: 230: else if((RB4 == 1) && (pressReleaseFlagCenter == 1))
+  1812  000200  A881               	btfss	3969,4,c	;volatile
+  1813  000202  0012               	return	
+  1814  000204  041A               	decf	_pressReleaseFlagCenter,w,c
+  1815  000206  A4D8               	btfss	status,2,c
+  1816  000208  0012               	return	
+  1817                           
+  1818                           ;main.c: 231: {
+  1819                           ;main.c: 232: pressReleaseFlagCenter = 0;
+  1820  00020A  0E00               	movlw	0
+  1821  00020C  6E1A               	movwf	_pressReleaseFlagCenter,c
+  1822  00020E  0012               	return	
+  1823  000210                     __end_of_MonitorCenteringButton:
+  1824                           	opt stack 0
+  1825                           pclatu	equ	0xFFB
+  1826                           pclath	equ	0xFFA
+  1827                           tblptru	equ	0xFF8
+  1828                           tblptrh	equ	0xFF7
+  1829                           tblptrl	equ	0xFF6
+  1830                           tablat	equ	0xFF5
+  1831                           prodh	equ	0xFF4
+  1832                           prodl	equ	0xFF3
+  1833                           intcon	equ	0xFF2
+  1834                           intcon2	equ	0xFF1
+  1835                           postinc0	equ	0xFEE
+  1836                           fsr0h	equ	0xFEA
+  1837                           fsr0l	equ	0xFE9
+  1838                           wreg	equ	0xFE8
+  1839                           postdec1	equ	0xFE5
+  1840                           fsr1h	equ	0xFE2
+  1841                           fsr1l	equ	0xFE1
+  1842                           fsr2h	equ	0xFDA
+  1843                           fsr2l	equ	0xFD9
+  1844                           status	equ	0xFD8
+  1845                           
+  1846 ;; *************** function _CenterMotors *****************
+  1847 ;; Defined at:
+  1848 ;;		line 165 in file "main.c"
+  1849 ;; Parameters:    Size  Location     Type
+  1850 ;;		None
+  1851 ;; Auto vars:     Size  Location     Type
+  1852 ;;		None
+  1853 ;; Return value:  Size  Location     Type
+  1854 ;;		None               void
+  1855 ;; Registers used:
+  1856 ;;		wreg, status,2
+  1857 ;; Tracked objects:
+  1858 ;;		On entry : 0/0
+  1859 ;;		On exit  : 0/0
+  1860 ;;		Unchanged: 0/0
+  1861 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2
+  1862 ;;      Params:         0       0       0       0
+  1863 ;;      Locals:         0       0       0       0
+  1864 ;;      Temps:          0       0       0       0
+  1865 ;;      Totals:         0       0       0       0
+  1866 ;;Total ram usage:        0 bytes
+  1867 ;; Hardware stack levels used:    1
+  1868 ;; This function calls:
+  1869 ;;		Nothing
+  1870 ;; This function is called by:
+  1871 ;;		_MonitorCenteringButton
+  1872 ;; This function uses a non-reentrant model
+  1873 ;;
+  1874                           
+  1875                           	psect	text20
+  1876  000274                     __ptext20:
+  1877                           	opt stack 0
+  1878  000274                     _CenterMotors:
+  1879                           	opt stack 27
+  1880                           
+  1881                           ;main.c: 167: dutyCycle1 = 1000;
+  1882                           
+  1883                           ;incstack = 0
+  1884  000274  0E03               	movlw	3
+  1885  000276  6E1D               	movwf	_dutyCycle1+1,c
+  1886  000278  0EE8               	movlw	232
+  1887  00027A  6E1C               	movwf	_dutyCycle1,c
+  1888                           
+  1889                           ;main.c: 168: dutyCycle2 = 1000;
+  1890  00027C  0E03               	movlw	3
+  1891  00027E  6E1F               	movwf	_dutyCycle2+1,c
+  1892  000280  0EE8               	movlw	232
+  1893  000282  6E1E               	movwf	_dutyCycle2,c
+  1894  000284  0012               	return		;funcret
+  1895  000286                     __end_of_CenterMotors:
+  1896                           	opt stack 0
+  1897  0000                     pclatu	equ	0xFFB
+  1898                           pclath	equ	0xFFA
+  1899                           tblptru	equ	0xFF8
+  1900                           tblptrh	equ	0xFF7
+  1901                           tblptrl	equ	0xFF6
+  1902                           tablat	equ	0xFF5
+  1903                           prodh	equ	0xFF4
+  1904                           prodl	equ	0xFF3
+  1905                           intcon	equ	0xFF2
+  1906                           intcon2	equ	0xFF1
+  1907                           postinc0	equ	0xFEE
+  1908                           fsr0h	equ	0xFEA
+  1909                           fsr0l	equ	0xFE9
+  1910                           wreg	equ	0xFE8
+  1911                           postdec1	equ	0xFE5
+  1912                           fsr1h	equ	0xFE2
+  1913                           fsr1l	equ	0xFE1
+  1914                           fsr2h	equ	0xFDA
+  1915                           fsr2l	equ	0xFD9
+  1916                           status	equ	0xFD8
+  1917                           pclatu	equ	0xFFB
+  1918                           pclath	equ	0xFFA
+  1919                           tblptru	equ	0xFF8
+  1920                           tblptrh	equ	0xFF7
+  1921                           tblptrl	equ	0xFF6
+  1922                           tablat	equ	0xFF5
+  1923                           prodh	equ	0xFF4
+  1924                           prodl	equ	0xFF3
+  1925                           intcon	equ	0xFF2
+  1926                           intcon2	equ	0xFF1
+  1927                           postinc0	equ	0xFEE
+  1928                           fsr0h	equ	0xFEA
+  1929                           fsr0l	equ	0xFE9
+  1930                           wreg	equ	0xFE8
+  1931                           postdec1	equ	0xFE5
+  1932                           fsr1h	equ	0xFE2
+  1933                           fsr1l	equ	0xFE1
+  1934                           fsr2h	equ	0xFDA
+  1935                           fsr2l	equ	0xFD9
+  1936                           status	equ	0xFD8
+  1937                           
+  1938                           	psect	rparam
+  1939  0000                     pclatu	equ	0xFFB
+  1940                           pclath	equ	0xFFA
+  1941                           tblptru	equ	0xFF8
+  1942                           tblptrh	equ	0xFF7
+  1943                           tblptrl	equ	0xFF6
+  1944                           tablat	equ	0xFF5
+  1945                           prodh	equ	0xFF4
+  1946                           prodl	equ	0xFF3
+  1947                           intcon	equ	0xFF2
+  1948                           intcon2	equ	0xFF1
+  1949                           postinc0	equ	0xFEE
+  1950                           fsr0h	equ	0xFEA
+  1951                           fsr0l	equ	0xFE9
+  1952                           wreg	equ	0xFE8
+  1953                           postdec1	equ	0xFE5
+  1954                           fsr1h	equ	0xFE2
+  1955                           fsr1l	equ	0xFE1
+  1956                           fsr2h	equ	0xFDA
+  1957                           fsr2l	equ	0xFD9
+  1958                           status	equ	0xFD8
+  1959                           
+  1960                           	psect	temp
+  1961  000020                     btemp:
+  1962                           	opt stack 0
+  1963  000020                     	ds	1
+  1964  0000                     int$flags	set	btemp
+  1965                           pclatu	equ	0xFFB
+  1966                           pclath	equ	0xFFA
+  1967                           tblptru	equ	0xFF8
+  1968                           tblptrh	equ	0xFF7
+  1969                           tblptrl	equ	0xFF6
+  1970                           tablat	equ	0xFF5
+  1971                           prodh	equ	0xFF4
+  1972                           prodl	equ	0xFF3
+  1973                           intcon	equ	0xFF2
+  1974                           intcon2	equ	0xFF1
+  1975                           postinc0	equ	0xFEE
+  1976                           fsr0h	equ	0xFEA
+  1977                           fsr0l	equ	0xFE9
+  1978                           wreg	equ	0xFE8
+  1979                           postdec1	equ	0xFE5
+  1980                           fsr1h	equ	0xFE2
+  1981                           fsr1l	equ	0xFE1
+  1982                           fsr2h	equ	0xFDA
+  1983                           fsr2l	equ	0xFD9
+  1984                           status	equ	0xFD8
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        4
+    BSS         12
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM          126     15      31
+    BANK0           128      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    None.
+
+Critical Paths under _Interrupt in COMRAM
+
+    _Interrupt->_WriteMotor1Output
+    _Interrupt->_WriteMotor2Output
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _Interrupt in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _Interrupt in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _Interrupt in BANK2
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 0     0      0       0
+                    _ConfigureTimers
+               _InitializeOutputPins
+                 _IntializeInputPins
+ ---------------------------------------------------------------------------------
+ (1) _IntializeInputPins                                   0     0      0       0
+ ---------------------------------------------------------------------------------
+ (1) _InitializeOutputPins                                 0     0      0       0
+ ---------------------------------------------------------------------------------
+ (1) _ConfigureTimers                                      0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 1
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (2) _Interrupt                                           14    14      0      30
+                                              1 COMRAM    14    14      0
+             _MonitorCenteringButton
+               _MonitorMotor1Buttons
+               _MonitorMotor2Buttons
+                 _MonitorRelayButton
+                  _WriteMotor1Output
+                  _WriteMotor2Output
+ ---------------------------------------------------------------------------------
+ (3) _WriteMotor2Output                                    1     1      0      15
+                                              0 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ (3) _WriteMotor1Output                                    1     1      0      15
+                                              0 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ (3) _MonitorRelayButton                                   0     0      0       0
+                  _ToggleRelayOutput
+ ---------------------------------------------------------------------------------
+ (4) _ToggleRelayOutput                                    0     0      0       0
+ ---------------------------------------------------------------------------------
+ (3) _MonitorMotor2Buttons                                 0     0      0       0
+       _MonitorMotor2DecrementButton
+       _MonitorMotor2IncrementButton
+ ---------------------------------------------------------------------------------
+ (4) _MonitorMotor2IncrementButton                         0     0      0       0
+           _IncrementMotor2DutyCycle
+ ---------------------------------------------------------------------------------
+ (5) _IncrementMotor2DutyCycle                             0     0      0       0
+ ---------------------------------------------------------------------------------
+ (4) _MonitorMotor2DecrementButton                         0     0      0       0
+           _DecrementMotor2DutyCycle
+ ---------------------------------------------------------------------------------
+ (5) _DecrementMotor2DutyCycle                             0     0      0       0
+ ---------------------------------------------------------------------------------
+ (3) _MonitorMotor1Buttons                                 0     0      0       0
+       _MonitorMotor1DecrementButton
+       _MonitorMotor1IncrementButton
+ ---------------------------------------------------------------------------------
+ (4) _MonitorMotor1IncrementButton                         0     0      0       0
+           _IncrementMotor1DutyCycle
+ ---------------------------------------------------------------------------------
+ (5) _IncrementMotor1DutyCycle                             0     0      0       0
+ ---------------------------------------------------------------------------------
+ (4) _MonitorMotor1DecrementButton                         0     0      0       0
+           _DecrementMotor1DutyCycle
+ ---------------------------------------------------------------------------------
+ (5) _DecrementMotor1DutyCycle                             0     0      0       0
+ ---------------------------------------------------------------------------------
+ (3) _MonitorCenteringButton                               0     0      0       0
+                       _CenterMotors
+ ---------------------------------------------------------------------------------
+ (4) _CenterMotors                                         0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 5
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _ConfigureTimers
+   _InitializeOutputPins
+   _IntializeInputPins
+
+ _Interrupt (ROOT)
+   _MonitorCenteringButton
+     _CenterMotors
+   _MonitorMotor1Buttons
+     _MonitorMotor1DecrementButton
+       _DecrementMotor1DutyCycle
+     _MonitorMotor1IncrementButton
+       _IncrementMotor1DutyCycle
+   _MonitorMotor2Buttons
+     _MonitorMotor2DecrementButton
+       _DecrementMotor2DutyCycle
+     _MonitorMotor2IncrementButton
+       _IncrementMotor2DutyCycle
+   _MonitorRelayButton
+     _ToggleRelayOutput
+   _WriteMotor1Output
+   _WriteMotor2Output
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BIGRAM             2FF      0       0      10        0.0%
+EEDATA             100      0       0       0        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK0            80      0       0       4        0.0%
+BANK0               80      0       0       5        0.0%
+BITCOMRAM           7E      0       0       0        0.0%
+COMRAM              7E      F      1F       1       24.6%
+BITSFR               0      0       0      40        0.0%
+SFR                  0      0       0      40        0.0%
+STACK                0      0       0       2        0.0%
+NULL                 0      0       0       0        0.0%
+ABS                  0      0      1F       3        0.0%
+DATA                 0      0      1F      11        0.0%
+CODE                 0      0       0       0        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V1.35 build -356382666 
+Symbol Table                                                                                   Wed Jan 20 17:13:16 2016
+
+       ??_MonitorMotor2IncrementButton 0001                     _MonitorRelayButton 0138  
+                  ?_IntializeInputPins 0001                                     l78 0292  
+                          __CFG_BOR$ON 000000                           __CFG_CP0$OFF 000000  
+                         __CFG_CP1$OFF 000000                            __CFG_OSC$XT 000000  
+                          __CFG_LVP$ON 000000                                    _GIE 007F97  
+                         __CFG_CPB$OFF 000000                                    _RB0 007C08  
+                                  _RB1 007C09                                    _RB2 007C0A  
+                                  _RB3 007C0B                                    _RB4 007C0C  
+                                  _RC3 007C13                                    _RB5 007C0D  
+                                  _RC4 007C14                                    _RC5 007C15  
+                         __CFG_CPD$OFF 000000                    ?_MonitorRelayButton 0001  
+                         __CFG_BORV$20 000000                                    wreg 000FE8  
+                 __end_of_CenterMotors 0286                           __CFG_WDT$OFF 000000  
+                 ??_IntializeInputPins 0010                           __CFG_STVR$ON 000000  
+                                 _main 0286                                   fsr0h 000FEA  
+                                 fsr1h 000FE2                                   fsr0l 000FE9  
+                                 fsr2h 000FDA                                   fsr1l 000FE1  
+                                 fsr2l 000FD9                                   btemp 0020  
+                 ??_MonitorRelayButton 0001                                   pclat 000FFA  
+                                 prodh 000FF4                                   prodl 000FF3  
+              ?_MonitorCenteringButton 0001                                   start 00FE  
+                         ___param_bank 000010                          __CFG_OSCS$OFF 000000  
+                                ?_main 0001                                  _T0CON 000FD5  
+                                i2l102 01B8                                  i2l120 0194  
+                                i2l114 0170                                  i2l108 01DC  
+                                i2l126 0200                                  i2l138 014C  
+                                i2l148 00C2                                  i2l872 007E  
+                                i2l882 00B0                                  i2l868 006A  
+     __end_of_DecrementMotor1DutyCycle 0274                                  _TMR0L 000FD6  
+                        __CFG_PWRT$OFF 000000                          __CFG_WRT0$OFF 000000  
+                        __CFG_WRT1$OFF 000000                         __CFG_EBTR0$OFF 000000  
+                       __CFG_EBTR1$OFF 000000       __end_of_DecrementMotor2DutyCycle 0262  
+                        __CFG_WRTB$OFF 000000                          __CFG_WRTC$OFF 000000  
+                        __CFG_WRTD$OFF 000000                         __CFG_EBTRB$OFF 000000  
+                                tablat 000FF5         __end_of_MonitorCenteringButton 0210  
+                                status 000FD8                        _ConfigureTimers 0294  
+                      __initialization 0102                           __end_of_main 0294  
+                               ??_main 0010                          __activetblptr 000000  
+        __size_of_InitializeOutputPins 0008                      _WriteMotor1Output 02B0  
+                    _WriteMotor2Output 02A2                   _MonitorMotor1Buttons 02C8  
+                 _MonitorMotor2Buttons 02BE                        __CFG_CCP2MUX$ON 000000  
+                   ?_WriteMotor1Output 0001                     ?_WriteMotor2Output 0001  
+                               _TMR0IE 007F95                                 _TMR0IF 007F92  
+                       __CFG_WDTPS$128 000000                    ??_WriteMotor1Output 0001  
+                  ??_WriteMotor2Output 0001                     __size_of_Interrupt 00F6  
+ __end_of_MonitorMotor2DecrementButton 01A4  __size_of_MonitorMotor2DecrementButton 0024  
+         _MonitorMotor2DecrementButton 0180                                 clear_0 0108  
+                __size_of_CenterMotors 0012              __end_of_WriteMotor1Output 02BE  
+    __size_of_IncrementMotor1DutyCycle 0016              __end_of_WriteMotor2Output 02B0  
+            ?_IncrementMotor1DutyCycle 0001                           __pdataCOMRAM 001C  
+                ?_MonitorMotor1Buttons 0001      __size_of_IncrementMotor2DutyCycle 0016  
+                ?_MonitorMotor2Buttons 0001              ?_IncrementMotor2DutyCycle 0001  
+                               tblptrh 000FF7                                 tblptrl 000FF6  
+                               tblptru 000FF8               _DecrementMotor1DutyCycle 0262  
+ __end_of_MonitorMotor1IncrementButton 01C8  __size_of_MonitorMotor1IncrementButton 0024  
+         _MonitorMotor1IncrementButton 01A4               _DecrementMotor2DutyCycle 0250  
+              __end_of_ConfigureTimers 02A2                             __accesstop 0080  
+              __end_of__initialization 012E                          ___rparam_used 000001  
+                         _CenterMotors 0274                         __pcstackCOMRAM 0001  
+        ?_MonitorMotor2DecrementButton 0001                      _dutyCycle1Counter 0010  
+                    _dutyCycle2Counter 0012                      __end_of_Interrupt 00FE  
+        ?_MonitorMotor1IncrementButton 0001                  _pressReleaseFlagRelay 001B  
+           __size_of_WriteMotor1Output 000E             __size_of_WriteMotor2Output 000E  
+               ??_MonitorMotor1Buttons 0001                 ??_MonitorMotor2Buttons 0001  
+                              i2u21_40 02BA                                i2u23_40 02AC  
+          __size_of_IntializeInputPins 0014                       ?_ConfigureTimers 0001  
+          __size_of_MonitorRelayButton 0024                                __Hparam 0000  
+                              __Lparam 0000                                __pcinit 0102  
+                           _dutyCycle1 001C                             _dutyCycle2 001E  
+                              __ramtop 0300                WriteMotor1Output@output 0001  
+                              __ptext0 0286                                __ptext1 023C  
+                              __ptext2 02D2                                __ptext3 0294  
+                              __ptext5 02A2                                __ptext6 02B0  
+                              __ptext7 0138                                __ptext8 02DE  
+                              __ptext9 02BE         ??_MonitorMotor2DecrementButton 0001  
+                 end_of_initialization 012E           __end_of_InitializeOutputPins 02DA  
+     __end_of_IncrementMotor1DutyCycle 023C         ??_MonitorMotor1IncrementButton 0001  
+                              postdec1 000FE5       __end_of_IncrementMotor2DutyCycle 0226  
+                              postinc0 000FEE             ??_DecrementMotor1DutyCycle 0001  
+           ??_DecrementMotor2DutyCycle 0001                              _TRISBbits 000F93  
+                            _TRISCbits 000F94                          __pidataCOMRAM 02DA  
+              WriteMotor2Output@output 0001                          _periodCounter 0014  
+                  start_initialization 0102               ??_MonitorCenteringButton 0001  
+                            _Interrupt 0008               _IncrementMotor1DutyCycle 0226  
+             _IncrementMotor2DutyCycle 0210                   _InitializeOutputPins 02D2  
+                          __pbssCOMRAM 0010                             ?_Interrupt 0001  
+ __end_of_MonitorMotor1DecrementButton 01EC  __size_of_MonitorMotor1DecrementButton 0024  
+         _MonitorMotor1DecrementButton 01C8                              __pintcode 0008  
+               _pressReleaseFlagCenter 001A                      _ToggleRelayOutput 02DE  
+                ?_InitializeOutputPins 0001                     ?_ToggleRelayOutput 0001  
+        __size_of_MonitorMotor1Buttons 000A          __size_of_MonitorMotor2Buttons 000A  
+           __end_of_IntializeInputPins 0250                    ??_ToggleRelayOutput 0001  
+      __size_of_MonitorCenteringButton 0024             __end_of_MonitorRelayButton 015C  
+             __size_of_ConfigureTimers 000E              __end_of_ToggleRelayOutput 02E2  
+        ?_MonitorMotor1DecrementButton 0001                            _INTCON2bits 000FF1  
+                            copy_data0 0122                            ??_Interrupt 0002  
+ __end_of_MonitorMotor2IncrementButton 0180  __size_of_MonitorMotor2IncrementButton 0024  
+         _MonitorMotor2IncrementButton 015C                               __Hrparam 0000  
+                        ?_CenterMotors 0001                               __Lrparam 0000  
+               _MonitorCenteringButton 01EC                 ??_InitializeOutputPins 0010  
+                             __ptext10 015C                               __ptext11 0210  
+                             __ptext20 0274                               __ptext12 0180  
+                             __ptext13 0250                               __ptext14 02C8  
+                             __ptext15 01A4                               __ptext16 0226  
+                             __ptext17 01C8                               __ptext18 0262  
+                             __ptext19 01EC      __size_of_DecrementMotor1DutyCycle 0012  
+            ?_DecrementMotor1DutyCycle 0001                          __size_of_main 000E  
+           ??_IncrementMotor1DutyCycle 0001          ?_MonitorMotor2IncrementButton 0001  
+    __size_of_DecrementMotor2DutyCycle 0012              ?_DecrementMotor2DutyCycle 0001  
+                       ??_CenterMotors 0001             ??_IncrementMotor2DutyCycle 0001  
+                             int$flags 0020             __size_of_ToggleRelayOutput 0004  
+                    ??_ConfigureTimers 0010         ??_MonitorMotor1DecrementButton 0001  
+                    _pressReleaseFlag1 0016                      _pressReleaseFlag2 0017  
+                    _pressReleaseFlag3 0018                      _pressReleaseFlag4 0019  
+                             intlevel2 0000           __end_of_MonitorMotor1Buttons 02D2  
+                   _IntializeInputPins 023C           __end_of_MonitorMotor2Buttons 02C8  
