@@ -11,50 +11,16 @@
 #include <pic18f242.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <htc.h>
 #include <stdbool.h>
+#include <plib/pwm.h>
 
-#pragma config OSC = XT         // Oscillator Selection bits (XT oscillator)
-#pragma config OSCS = OFF       // Oscillator System Clock Switch Enable bit (Oscillator system clock switch option is disabled (main oscillator is source))
-
-#pragma config PWRT = OFF       // Power-up Timer Enable bit (PWRT disabled)
-#pragma config BOR = ON         // Brown-out Reset Enable bit (Brown-out Reset enabled)
-#pragma config BORV = 20        // Brown-out Reset Voltage bits (VBOR set to 2.0V)
-
-#pragma config WDT = OFF        // Watchdog Timer Enable bit (WDT disabled (control is placed on the SWDTEN bit))
-#pragma config WDTPS = 128      // Watchdog Timer Postscale Select bits (1:128)
-
-#pragma config CCP2MUX = ON     // CCP2 Mux bit (CCP2 input/output is multiplexed with RC1)
-
-#pragma config STVR = ON        // Stack Full/Underflow Reset Enable bit (Stack Full/Underflow will cause RESET)
-#pragma config LVP = ON         // Low Voltage ICSP Enable bit (Low Voltage ICSP enabled)
-
-#pragma config CP0 = OFF        // Code Protection bit (Block 0 (000200-001FFFh) not code protected)
-#pragma config CP1 = OFF        // Code Protection bit (Block 1 (002000-003FFFh) not code protected)
-
-#pragma config CPB = OFF        // Boot Block Code Protection bit (Boot Block (000000-0001FFh) not code protected)
-#pragma config CPD = OFF        // Data EEPROM Code Protection bit (Data EEPROM not code protected)
-
-#pragma config WRT0 = OFF       // Write Protection bit (Block 0 (000200-001FFFh) not write protected)
-#pragma config WRT1 = OFF       // Write Protection bit (Block 1 (002000-003FFFh) not write protected)
-
-#pragma config WRTC = OFF       // Configuration Register Write Protection bit (Configuration registers (300000-3000FFh) not write protected)
-#pragma config WRTB = OFF       // Boot Block Write Protection bit (Boot Block (000000-0001FFh) not write protected)
-#pragma config WRTD = OFF       // Data EEPROM Write Protection bit (Data EEPROM not write protected)
-
-#pragma config EBTR0 = OFF      // Table Read Protection bit (Block 0 (000200-001FFFh) not protected from Table Reads executed in other blocks)
-#pragma config EBTR1 = OFF      // Table Read Protection bit (Block 1 (002000-003FFFh) not protected from Table Reads executed in other blocks)
-#pragma config EBTRB = OFF      // Boot Block Table Read Protection bit (Boot Block (000000-0001FFh) not protected from Table Reads executed in other blocks)
-
-#define _XTAL_FREQ 20000000
-
-#define CENTERED_DUTY1 1000
-#define CENTERED_DUTY2 1000
-#define PERIOD 2000
-#define DUTY1_DELTA 200
-#define DUTY2_DELTA 200
-#define DUTY1_MAX 2000
-#define DUTY2_MAX 2000
+#define CENTERED_DUTY1 100
+#define CENTERED_DUTY2 100
+#define PERIOD 1779
+#define DUTY1_DELTA 1
+#define DUTY2_DELTA 1
+#define DUTY1_MAX 100
+#define DUTY2_MAX 100
 #define DUTY1_MIN 0
 #define DUTY2_MIN 0
 #define HIGH (1)
@@ -287,7 +253,7 @@ void interrupt Interrupt(){
        dutyCycle1Counter++;
        dutyCycle2Counter++;
        periodCounter++;
-
+   ToggleRelayOutput();
     TMR0IF = 0;
     TMR0L	 = 0xFB;
   }

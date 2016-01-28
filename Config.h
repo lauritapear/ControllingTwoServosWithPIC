@@ -42,7 +42,7 @@ extern "C" {
 #pragma config LVP = OFF        // Low-Voltage Programming Enable (High-voltage on MCLR/VPP must be used for programming)
 
 #define _XTAL_FREQ 20000000
-
+    
 #ifdef	__cplusplus
 }
 #endif
