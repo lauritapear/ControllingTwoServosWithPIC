@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=BabyMirror.X
+PROJECTNAME=ControllingTwoServosWithPIC
 
 # Active Configuration
 DEFAULTCONF=default
